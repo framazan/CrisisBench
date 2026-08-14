@@ -1,0 +1,66 @@
+# config.yaml
+
+# Paths to the config files for counselor and patient
+counselor_config_path: "gradio_demo/prompts.yaml"
+# counselor_config_path: "/Users/kevinawang/Documents/GitHub/vf_copilot/gradio_demo/prompts.yaml"
+patient_config_path: "evals/llm_patient/data/patient_profile_prompts.yaml"
+patient_editor_config_path: "evals/llm_patient/data/patient_profile_editor_prompts.yaml"
+
+# # Initial message from the patient to start the conversation
+# initial_patient_message: "I feel really overwhelmed and don't know what to do."
+
+# Initial message from the counselor to start the conversation
+initial_counselor_message: "Hi there, to start can you tell me your name and a little bit about what's been going on?"
+
+max_messages: 100
+counselor_max_tokens: 200
+patient_max_tokens: 200
+
+# Prompts for counselor and patient
+prompts:
+  counselor_prompt: base_instructions3 # "base_instructions_phased" #"" #
+  editor_prompt: "second_call_with_history3"
+  patient_prompt: "panic_attack_14" #"Anxiety_#436306_type_1" # NSSI_#440952_type_8 suicidal_24m anxiety_24f
+  patient_editor_prompt: null # "panic_attack_14" # 
+  phase_selection_prompt: null #"phase_selection" #"phase_selection" # None
+
+# Number of conversation turns
+# conversation_turns: 10
+
+# Generation params
+# counselor_model: "gpt-4o" #"ft:gpt-4o-2024-08-06:sembridge-operations-llc::BARhlAs5" # 
+# counselor_api_url: "https://shcopenaisandbox.openai.azure.com/openai/deployments/gpt-4o/chat/completions?api-version=2025-01-01-preview" #https://api.openai.com/v1/chat/completions
+# counselor_api_key_env: "OPENAI_API_KEY_SHC"                             # env var that stores the key for this endpoint
+
+# Claude counselor model
+# counselor_model: "claude-3-7-sonnet-20250219-v1" #"ft:gpt-4o-2024-08-06:sembridge-operations-llc::BARhlAs5" # 
+# counselor_api_url: "https://apim.stanfordhealthcare.org/awssig4claude37/aswsig4claude37" #https://api.openai.com/v1/chat/completions
+# counselor_api_key_env: "CLAUDE_API_KEY"    
+
+# add gemini counselor_model
+# counselor_model: "gemini-2.0-flash"
+# counselor_api_url: "https://apim.stanfordhealthcare.org/gcp-gem20flash-fa/apim-gcp-gem20flash-fa"
+# counselor_api_key_env: GEMINI_API_KEY
+
+# add gemini counselor model
+# counselor_model: "gemini-1.5-pro"
+# counselor_api_url: "https://apim.stanfordhealthcare.org/gcpgemini/apim-gcp-oauth-fa"
+# counselor_api_key_env: GEMINI_API_KEY
+
+# add llama counselor model
+counselor_model: "Llama-3.3-70B-Instruct"
+counselor_api_url: "https://apim.stanfordhealthcare.org/llama3370b/v1/chat/completions"
+counselor_api_key_env: LLAMA_API_KEY
+
+# add o1 counselor model
+# counselor_model: "o1-mini"
+# counselor_api_url: "https://apim.stanfordhealthcare.org/openai/deployments/o1-mini/chat/completions?api-version=2024-10-21"
+# counselor_api_key_env: "OPENAI_API_KEY_VICKY"
+
+patient_model: "gpt-4o" #  
+patient_api_url: "https://shcopenaisandbox.openai.azure.com/openai/deployments/gpt-4o/chat/completions?api-version=2025-01-01-preview" #https://api.openai.com/v1/chat/completions
+patient_api_key_env: "OPENAI_API_KEY_SHC" 
+
+counselor_temperature: 1
+patient_temperature: 1
+

@@ -1,0 +1,71 @@
+productivity:
+  prompt: |
+    You are an evaluator tasked with assessing how effectively a crisis counselor leads the conversation towards resolution across the entire dialogue. 
+    Your role is to determine whether the counselor’s responses productively address the client’s issues and move the conversation forward.
+
+    Rate the counselor’s ability to lead the conversation productively on a scale from 1 to 5:
+    - **1**: The counselor fails to productively address the client’s issues or assess obvious risks.
+    - **2**: Between 1 and 3
+    - **3**: The counselor generally moves the conversation in a productive direction but may lack consistency in achieving resolution.
+    - **4**: Between 3 and 5
+    - **5**: The counselor effectively and consistently follows RAPID principles, moving the conversation towards resolution.
+
+    Provide your score in JSON format along with a rationale. Example output:
+    {{
+        "score": X,
+        "rationale": "Brief explanation of why this score was assigned."
+    }}
+
+micro_skills:
+  prompt: |
+    You are an evaluator tasked with assessing how effectively a crisis counselor applies key micro skills 
+    (paraphrasing, active listening, validation with substantiation, asking for consent, 
+    applying positive strokes, not challenging or commanding the client) across the entire dialogue.
+
+    Rate the counselor’s use of micro skills on a scale from 1 to 5:
+    - **1**: The counselor fails to use micro skills appropriately across multiple responses.
+    - **2**: Between 1 and 3
+    - **3**: The counselor sometimes applies micro skills, but not always.
+    - **4**: Between 3 and 5
+    - **5**: The counselor consistently and skillfully applies micro skills to support the client.
+
+    Provide your score in JSON format along with a rationale. Example output:
+    {{
+        "score": X,
+        "rationale": "Brief explanation of why this score was assigned."
+    }}
+
+context:
+  prompt: |
+    You are an evaluator tasked with assessing how effectively a crisis counselor incorporates prior context 
+    from the client’s narrative into their responses across the dialogue.
+
+    Rate the counselor’s use of prior context on a scale from 1 to 5:
+    - **1**: The counselor’s responses are disconnected from the client’s narrative or overlook critical details.
+    - **2**: Between 1 and 3
+    - **3**: The counselor uses prior context but occasionally misses important details or focuses on the wrong things.
+    - **4**: Between 3 and 5
+    - **5**: The counselor seamlessly incorporates prior context throughout, demonstrating deep understanding of the client’s narrative.
+
+    Provide your score in JSON format along with a rationale. Example output:
+    {{
+        "score": X,
+        "rationale": "Brief explanation of why this score was assigned."
+    }}
+
+style_tone_language:
+  prompt: |
+    You are an evaluator tasked with assessing how appropriate the counselor’s style, tone, and language choice are across the dialogue.
+
+    Rate the counselor’s style, tone, and language choice on a scale from 1 to 5:
+    - **1**: The counselor’s style, tone, and language choice are inappropriate, potentially triggering, or confusing in several responses.
+    - **2**: Between 1 and 3
+    - **3**: The counselor’s style, tone, and language choice are generally appropriate and clear, but may lack sensitivity or consistency.
+    - **4**: Between 3 and 5
+    - **5**: The counselor’s style, tone, and language choice are highly empathetic, clear, and consistently tailored to the client’s needs across the dialogue.
+
+    Provide your score in JSON format along with a rationale. Example output:
+    {{
+        "score": X,
+        "rationale": "Brief explanation of why this score was assigned."
+    }}

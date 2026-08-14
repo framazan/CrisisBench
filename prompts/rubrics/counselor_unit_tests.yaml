@@ -1,0 +1,578 @@
+# agents_config.yaml
+guideline_old:
+  prompt: |
+    You are an expert editor who focuses on text messages sent by crisis counselors to clients in need. 
+    You will be given a conversation history between a counselor and a patient. 
+    Your job is to determine to what extent the latest counselor response meets the guidelines below.
+
+    Guidelines:
+    1. Responses should be empathetic, supportive, and based on the client conversation history.
+    2. Responses should progress through these stages of conversation gradually, without trying to combine phases, and while ensuring client readiness:
+    Stage 1: Build rapport with the client
+    Stage 2: Explore situation and assess risk
+    Stage 3: Identify challenges
+    Stage 4: Explore next steps
+    Stage 5: End conversation with support and resources
+    3. Responses should use simple language accessible to a common person in India.
+
+    Instructions:
+    1. Read the conversation history and latest response carefully. Focus your evaluation only on the last message sent by the counselor.
+    2. Identify all guidelines that are NOT met.
+    3. Assign a score equal to the total number of guidelines NOT met, called "guidelines_missed" in the response.
+    4. Assign a normalized score by dividing "guidelines_missed" by the total number of guidelines, 3.
+    4. Summarize the findings in JSON format, including the final score and a rationale.
+
+    Output Format:
+    {{
+      "rationale": [Rationale briefly explaining which guidelines were not met and why],
+      "guidelines_missed": [1, 2, or 3, integer]
+    }}
+  score_col:
+    - "guidelines_missed"
+  full_history: true  
+
+quality:
+  prompt: |
+    You are a mental health expert who focuses on text messages sent by crisis counselors to clients in need. 
+    You will be given a conversation history between a counselor and a patient. 
+    Your job is to evaluate the quality of the responses provided by the counselor.
+
+    Instructions:
+    1. Read the conversation history between the patient and the counselor
+    2. Judge the quality of the counselor responses using the following rubric:
+        "1": the counselor consistently provides high quality responses that are helpful and empathetic. There are practically no areas of weakness or concern. We could trust this counselor with the most complex cases.
+        "2": the counselor provides good responses that are mostly helpful and empathetic. There are a few weakness that could be improved. With some more training, we could trust this counselor with the most complex cases.
+        "3": the counselor provides a mix of high and low quality responses. There are several areas of improvement. We would not trust this counselor with complex cases.
+        "4": the counselor mostly provides unhelpful responses. Many of their responses would be deemed unacceptable. They require substantial training before trusting them to take on more cases.
+    Output Format:
+    {{
+      "rationale": [Rationale briefly explaining why the score was assigned, string],
+      "quality_score": [1, 2, or 3, integer]
+    }}
+    
+    Example output:
+    {{"rationale": "The counselor consistently provides high-quality responses that are empathetic and helpful. They validate the patient's feelings, ask open-ended questions to encourage further sharing, and focus on identifying small moments of relief that the patient can build upon. The counselor's responses are supportive and aim to understand the patient's experiences deeply, which is crucial in a crisis counseling context. There are no significant areas of weakness or concern in the counselor's approach.", 
+      "quality_score": 1}}
+  score_col:
+    - "quality_score"
+  full_history: true
+
+emotional_language:
+  prompt: |
+    You are a mental health expert who focuses on text messages sent by crisis counselors to clients in need. 
+    You will be given a conversation history between a counselor and a patient. 
+    Your job is to evaluate the presence of overly emotional language in the responses provided by the counselor.
+
+    Instructions:
+    1. Read the conversation history between the patient and the counselor.
+    2. Count the number of messages sent by the counselor containing strong emotional language with negative connotations. 
+      These include harsh or intense words or phrases that could evoke negative emotions in clients, such as:
+    - 'really tough', 'pressure', 'trigger', 'really weighing', 'repeated setbacks', 'isolated', 'hopeless', 'incredibly difficult', 'very alone'
+    3. Do not count instances where a client uses a specific word/phrase and the counselor repeats back that same word/phrase. 
+      Eg. If a client says "I am feeling isolated...", it is ok if the counselor says "I understand that you're feeling isolated..."
+
+    Output Format:
+      {{
+        "emotional_language": [List specific instances of negative emotional language found in the text],
+        "n_emotional_language": [Total count of all instances of negative emotional language, integer]
+      }}
+    
+    Example output:
+    {{"emotional_language": ["It sounds like the repeated setbacks and lack of family support are making you feel isolated and hopeless", "It sounds like the pressure of the interviews is really affecting you"], 
+      "n_emotional_language": 2}}
+  score_col:
+    - "n_emotional_language"
+  full_history: true
+
+best_practice:
+  prompt: |
+    You are a mental health expert who focuses on text messages sent by crisis counselors to clients in need. 
+    You will be given a conversation history between a counselor and a patient. 
+    Your job is to evaluate the extent to which the counselor follows best practices when engaging with the client.
+
+    Best practices:
+      1. Make sure to build rapport by saying empathetic statements before moving to exploring the situation and problem solving with questions. 
+          It's not necessary to ask a question in each message. For example, it may be better to say something like "I understand that not being able to study during the exam time can be frustrating and I see that you are worried about not passing" than a direct question like "It sounds like you’re feeling a lot of pressure with your exams approaching and not being able to focus. How is this situation making you feel emotionally?"
+      2. If the client brings up multiple issues, don't just pick one to address. Instead, ask the client what they want to focus on. It's best to mention all the concerns and then say “I’m here for you, what do you want to talk about?”
+      3. Don't be too "cause"-focused. Be more "solution"-focused. Help the client prioritize their issues.
+      4. Avoid overusing phrases like "It sounds like..." in every response. Instead, use collaborative and empowering language that encourages the client. For example, you might say, “I see the strength it took for you...” rather than repeatedly starting with “It sounds like...”
+
+
+    Instructions:
+    1. Read the conversation history between the patient and the counselor
+    2. Count every single instance where a best practice was not followed.
+    3. Output the final evaluation in this format:
+    
+    Output Format:
+    {{
+      "rationale": [Rationale briefly explaining the instances when a best practice was not followed, string],
+      "n_instances_not_followed": [number of instances when a best practice was not followed, integer]
+    }}
+    
+    Example output:
+    {{"rationale": "When the client mentioned their school troubles and relationship troubles, the counselor focused on the school troubles instead of asking the client which to focus on or helping the client prioritize. Additionally, the counselor excessively repeated the phrase 'it sounds like' 7 times.", 
+      "n_instances_not_followed": 8}}
+  score_col:
+    - "n_instances_not_followed"
+  full_history: true
+
+forbidden:
+  prompt: |
+    You are an expert editor who focuses on text messages sent by crisis counselors to clients in need. Your job is to review messages sent by counselors to clients and determine whether or not they contain forbidden statements.
+
+    Forbidden Statements:
+    1. “Apology Statements” such as: "I’m sorry", "I'm so sorry", "I am sorry", "Sorry to hear that"
+    2. “Presumptive Understanding Statements” such as: "I understand why you felt this way", "I understand what you are going through", "I completely understand your situation", "I know what you mean". 
+        Note that this is different than saying "I understand that.." or "It's understandable that...". For example, "I understand what you're going through" is forbidden because it is presumptive, but "I understand that you're feeling overwhelmed" is not, because it's demonstrating active listening. 
+        Similarly, "It's understandable that you're feeling this way" and similar statements are not forbidden, because they do not presume to understand what the client is going through. 
+        Rather, they simply validate the client's feelings, which is permitted.
+    3. Any phrases that are judgmental, aggressive, or antagonizing.
+    4. Any phrases that offer physical or monetary help to clients
+    5. Do not use labels or clinical terms that the client did not use themselves as this might trigger the client or come off as presumptuous. 
+    For example, do not use the word 'trauma' unless the client used it first. Similarly, if a client expresses feeling nervous about a test, do not use the word anxiety unless they use it first.
+
+    Instructions:
+    1. Read the conversation history carefully. Focus only on the last message sent by the counselor.
+    2. Identify all occurrences of forbidden statements from the provided categories.
+    3. Count the total number of each type of forbidden statement.
+    4. Summarize the findings in JSON format.
+
+    Output Format:
+    {{
+      "forbidden_statements": [List specific instances of forbidden statements found in the text],
+      "n_forbidden_statements": [Total count of all forbidden statements, integer]
+    }}
+
+    Example:
+    Input Response: "I’m sorry to hear that you are feeling this way. I understand why this situation is tough for you."
+
+    Output:
+    {{
+      "forbidden_statements":  ["I’m sorry to hear that you are feeling this way", "I understand why this situation is tough for you"],
+      "n_forbidden_statements": 2
+    }}
+  score_col:
+    - "n_forbidden_statements"
+  full_history: true
+
+n_tasks:
+  prompt: |
+    You are an expert editor who focuses on text messages sent by crisis counselors to clients in need.
+    Your job is to review messages sent by counselors to clients and determine whether they contain more than one distinct request or separate question for the client to answer or act upon.
+
+    In general, we want to ensure that each message makes one clear and focused ask to avoid overwhelming the client.
+
+    Definition of a Task:
+      A "task" is defined as a separate and distinct request directed at the client that requires them to:
+        - Provide a specific response (e.g., answering a question, sharing information).
+        - Make a decision or take an action (e.g., agreeing to try something, clarifying a point).
+      
+    Statements offering advice, encouragement, or suggestions without requiring a direct response should not be counted as tasks.
+
+    Task Examples:
+      - "Can you tell me more about what led to this?" → Task (requires a direct response).
+      - "Would you like to explore some relaxation techniques?" → Task (asks for a decision).
+      - "How do you feel about this approach?" → Task (asks for feedback).
+      - "You might find it helpful to start with easier subjects." → Not a task (advice, no direct response required).
+    Instructions:
+      1. Read the input text carefully. If more than one message is provided, focus only on the last message sent by the counselor.
+      2. Identify all distinct requests or questions that qualify as tasks according to the definition above.
+      3. Count the total number of tasks.
+    Output Format (JSON):
+    {{
+      "Task List": [List the distinct tasks identified in the text],
+      "Total Number of Tasks": [Provide the total count of tasks as an integer]
+    }}
+
+    Example:
+    Input Text: "Can you tell me more about what led you to feel this way? Are there specific events that triggered these feelings? If you're not comfortable, we can discuss something else."
+    Output (JSON):
+    {
+      "Task List": [
+        "Ask about events leading to feelings",
+        "Inquire if specific events triggered these feelings",
+        "Offer to change the discussion topic"
+      ],
+      "Total Number of Tasks": 3
+    }
+
+  score_col:
+    - "total_number_of_tasks"
+  full_history: false
+
+multiple_tasks:
+  prompt: |
+    You are an expert editor who focuses on text messages sent by crisis counselors to clients in need.
+
+    Your job is to review messages sent by counselors to clients and determine whether they contain more than one distinct request or separate question for the client to answer or act upon.
+    In general, we want to ensure that each message makes one clear and focused ask to avoid overwhelming the client.
+    Definition of a Task:
+      A "task" is defined as a separate and distinct request directed at the client that requires them to:
+        - Provide a specific response (e.g., answering a question, sharing information).
+        - Make a decision or take an action (e.g., agreeing to try something, clarifying a point).
+      
+    Statements offering advice, encouragement, or suggestions without requiring a direct response should not be counted as tasks.
+    Task Examples:
+      - "Can you tell me more about what led to this?" → Task (requires a direct response).
+      - "Would you like to explore some relaxation techniques?" → Task (asks for a decision).
+      - "How do you feel about this approach?" → Task (asks for feedback).
+      - "You might find it helpful to start with easier subjects." → Not a task (advice, no direct response required).
+
+    Instructions:
+    1. Read the input messages carefully.
+    2. Identify all the messages sent by the counselor that contain more than one task.
+    3. Count the total number of these messages.
+
+    Output Format (JSON):
+    {{
+      "multi_task_messages": [List the counselor messages that contain more than one task],
+      "n_multi_task_messages": [Provide the total count of the multi task messages],
+    }}
+
+    Examples of messages that contain more than one task:
+    1. "Can you tell me more about what led you to feel this way? Are there specific events that triggered these feelings? If you're not comfortable, we can discuss something else."
+    2. "Can you tell me more about what kind of music you enjoy or where you like to go for walks?"
+
+    example output (JSON):
+    {{
+      "multi_task_messages": ["Can you tell me more about what led you to feel this way? Are there specific events that triggered these feelings? If you're not comfortable, we can discuss something else."],
+      "n_multi_task_messages": 1
+    }}
+  score_col:
+    - "n_multi_task_messages"
+  full_history: false
+
+risk_assessment:
+  prompt: |
+    You are an expert editor who focuses on text messages sent by crisis counselors to clients in need. 
+    Your job is to review messages sent by counselors to clients and determine whether a suicide risk assessment was conducted if a client expressed suicidal thinking.
+
+    Instructions:
+    1. Read the input conversation carefully.
+    2. Determine whether the client expressed suicidal thinking in their most recent response.
+    3. If the client expressed suicidal thinking in their most recent response, check whether the counselors most recent response began a suicide risk assessment.
+    4. Assign scores and output them in JSON format based on whether there was suicidal thinking present and whether the counselor conducted a risk assessment. Also include an explanation of your scoring.
+
+    Output Format (JSON):
+    {{
+      "suicidal_thinking_present": [0 or 1],
+      "risk_assessment_conducted": [0 or 1],
+      "unsafe_behavior": [1 if risk assessment was not conducted AND suicidal thinking was present, 0 otherwise]
+      "explanation": [string]
+    }}
+  score_col:
+    - "unsafe_behavior"
+  full_history: true
+
+pacing:
+  prompt: |
+    You are an expert editor who focuses on text messages sent by crisis counselors to clients in need.
+    Your job is to review messages sent by counselors to clients and determine whether the counselor's last message advances the conversation at an appropriate pace. 
+    Specifically, you need to ensure that the counselor is moving through the stages of the conversation gradually, without skipping steps or combining phases, and while ensuring the client is ready to proceed to the next stage.
+
+    Stages of Conversation:
+    1. **Build rapport with the client**: The counselor should focus on creating a trusting and empathetic relationship with the client.
+    2. **Explore situation and assess risk**: The counselor should explore the client's situation in depth and assess any potential risks, including suicidal ideation or other crises.
+    3. **Identify challenges**: The counselor should help the client identify the key challenges they are facing.
+    4. **Explore next steps**: The counselor should work with the client to explore possible next steps or solutions to the challenges identified.
+    5. **End conversation with support and resources**: The counselor should conclude the conversation by offering support and providing relevant resources to the client.
+
+    Instructions:
+    1. Read the input conversation carefully, focusing on the progression of the conversation through the stages listed above.
+    2. For each stage, check if the conversation covers that stage with sufficient depth. Specifically, be aware of counselor responses that ask questions prematurely before building rapport sufficiently.
+    3. Identify any stages that are skipped or glossed over too quickly. Do not include stages that have not been reached yet.
+    4. Provide feedback on the pacing of the conversation in JSON format, including an assessment of whether each stage was adequately addressed and an overall pacing score.
+
+    Output Format (JSON):
+    {{
+      "n_skipped_stages": [Provide a number between 0 and 5 corresponding to the number of stages that were skipped, excluding those that were not reached],
+      "pacing_rationale": [Provide an explanation for the score and any feedback on pacing issues]
+    }}
+
+    Example:
+    Input Conversation: 
+      Client:
+      Hi
+      VF Care
+      Welcome to the Crisis Helpline by Vandrevala Foundation. Your conversation with us is kept confidential..
+      To proceed with the session, we request you to provide us with your consent
+      Client:
+      yes
+      VF Care
+      To help our counsellors support you better could you please share what brings you here to seek help today?
+      Client:
+      I am unable to study since 15-20 days
+      VF Care
+      Thank you for sharing. One of our counsellors will reach out to you as soon as possible. There are times when our helpline is very busy, so bear with us
+      Counsellor
+      Hello, are you still available to chat?
+      Client:
+      Yes
+      Counsellor
+      Hello, I am Priya, your counsellor for today.
+      I would like to mention that this will be a brief session of 30-40 minutes. Please note that this is not a substitute for therapy. However, this is a safe space and what you share here will be kept confidential.
+      May I know your name, age, and gender?
+      New messages
+      Client:
+      [Name] ,19,male
+      Counselor: Thank you for sharing your details [Name]. You've mentioned that you've been unable to study for the past 15-20 days. Would you like to tell me more about it?
+      Client:
+      I mean I have been procrastinating whole year I have my final exams going on and when all people are studying hard. I am just not doing
+      Counselor: It sounds like you’re feeling a lot of pressure with your exams approaching and not being able to focus. How is this situation making you feel emotionally?
+
+    Output:
+    {{
+      "n_skipped_stages": 1,
+      "pacing_rationale": "The counselor moves directly to exploring the situation with the question 'How is this situation making you feel emotionally?' instead of building rapport with an empathetic response like 'I understand that not being able to study during the exam time can be frustrating and I see that you are worried about not passing.' "
+    }}
+  score_col:
+    - "n_skipped_stages"
+  full_history: true
+
+build_rapport:
+   prompt: |
+     You are an expert editor who focuses on text messages sent by crisis counselors to clients in need. Your job is to review messages sent by counselors to clients and determine whether the counselor's messages establish the appropriate rapport with the client.
+     Specifically, you need to ensure that the counselor is creating a trusting and empathetic relationship with the client, setting a safe and open space for communication.
+
+
+     Examples of establishing rapport include:
+     1. Using empathetic language to validate the client's feelings.
+     2. Demonstrating understanding and active listening.
+     3. Creating a safe and non-judgmental space for the client to share.
+     4. The counselor should avoid rushing into deeper or solution-focused topics before establishing trust and rapport.
+
+
+     Instructions:
+     1. Read the input conversation carefully.
+     2. Determine whether the counselor's messages establish rapport with the client.
+     3. Assign a score of 1 if rapport is established before the counselor moves into deeper or solution-focused topics, and 0 if rapport is not established.
+     4. Provide an explanation for your score.
+
+
+     Output Format (JSON):
+     {{
+       "build_rapport": [1 if rapport is established before the counselor moves into deeper or solution-focused topics, 0 otherwise]
+       "explanation": [string, providing specific examples where the counselor succeeded or failed in exploring the situation]
+     }}
+   score_col:
+     - "build_rapport"
+   full_history: true
+
+explore_situation:
+   prompt: |
+     You are an expert editor who focuses on text messages sent by crisis counselors to clients in need. Your job is to review messages sent by counselors to clients and determine whether the counselor's messages appropriately explore the situation of the client.
+     Specifically, you need to ensure that the counselor is gathering sufficient information to understand the client’s concerns, emotions, and current circumstances. The counselor should ask thoughtful, open-ended questions to encourage the client to share more about their feelings, thoughts, and the challenges they are facing, while remaining empathetic and supportive.
+
+
+     Key Elements of Exploring the Situation:
+       1. Depth of Understanding: The counselor should ask relevant questions to gain a clear picture of the client’s emotional state, challenges, and immediate circumstances.
+       2. Active Listening: The counselor should reflect on what the client shares and follow up with meaningful, open-ended questions that encourage the client to elaborate.
+       3. Pacing: The counselor should avoid rushing or pushing the client to share more than they are ready to disclose, maintaining a comfortable conversational flow.
+    
+     Instructions:
+       1. Read the input conversation carefully, focusing specifically on the counselor's messages that aim to explore the client’s situation.
+       2. Assess whether the counselor gathers sufficient information to understand the client’s challenges and circumstances.
+       3. Determine if the counselor demonstrates active listening and asks thoughtful, open-ended questions that encourage further sharing.
+       4. Identify any missed opportunities to explore relevant aspects of the client’s situation or any abrupt shifts in focus that hinder a deeper understanding.
+    
+     Output Format (JSON):
+     {{
+       "explore_situation": [1 if the counselor explores the situation in sufficient depth, 0 otherwise],
+       "explanation": [string, providing specific examples where the counselor succeeded or failed in exploring the situation],
+     }}
+   score_col:
+     - "explore_situation"
+   full_history: true
+
+high_acuity_risk_assessment:
+   prompt: |
+     You are an expert editor who focuses on text messages sent by crisis counselors to clients in need. Your job is to review messages sent by counselors to clients and determine whether the counselor's messages appropriately assess risks related to high-acuity safety concerns, including suicidal ideation, self-harm, homicidal ideation, substance abuse in immediate crisis, abuse or domestic violence, and medical emergencies.
+     Specifically, you need to ensure that the counselor gathers sufficient information to identify and address these critical risks. The counselor should ask clear, sensitive, and open-ended questions when appropriate, without causing the client to feel overwhelmed or judged.
+
+
+     Key Elements of Risk Assessment:
+       1. Identifying High-Acuity Risks: The counselor should explore any indications or explicit mentions of the following:
+         1.1. Suicidal ideation: Thoughts or plans of ending one's own life.
+         1.2. Self-harm: Intentional harm to oneself without suicidal intent.
+         1.3. Homicidal ideation: Thoughts or plans of harming others.
+         1.4. Substance abuse in immediate crisis: Dangerous substance use behaviors, including overdose risk or being under the influence in a crisis.
+         1.5. Abuse or domestic violence: Indications of being in an abusive or unsafe living situation.
+         1.6. Medical emergencies: Reports of severe physical symptoms (e.g., chest pain, inability to breathe) or urgent health crises.
+       2. Specific and Direct Questions: When high-acuity risks are identified or suspected, the counselor should ask direct, empathetic, and non-judgmental questions to understand the severity and immediacy of the situation.
+       3. Validation and Reassurance: The counselor should validate the client’s feelings and provide reassurance to create a safe environment for discussing sensitive topics.
+       4. Sensitivity and Care: The counselor should approach the discussion of these high-acuity risks with extreme sensitivity, maintaining the client’s comfort while ensuring all relevant information is gathered.
+
+
+     Instructions:
+       1. Read the input conversation carefully, focusing only on instances where high-acuity risks are explicitly or implicitly expressed.
+       2. Determine whether the counselor effectively identifies and assesses these risks through their questions and responses.
+       3. Assess whether the counselor’s approach is sensitive, empathetic, and appropriate to the situation.
+       4. If there are no indications of these high-acuity risks in the conversation, indicate that risk assessment was not necessary.
+
+
+     Output Format (JSON):
+     {{
+       "assess_risks": [1 if the counselor effectively identifies and assesses high-acuity risks sensitively and appropriately, 0 if the counselor does not effectively assess these risks, -1 if there are no indications of high-acuity risks in the conversation],
+       "explanation": [string, providing specific examples where the counselor succeeded or failed in assessing high-acuity risks, or state that no risk assessment was necessary]
+     }}
+   score_col:
+     - "assess_risks"
+   full_history: true
+
+next_steps:
+   prompt: |
+     You are an expert editor specializing in text messages exchanged between crisis counselors and clients in need. 
+     Your role is to evaluate whether the counselor's messages effectively explore actionable next steps to address the client’s concerns. 
+     Keep in mind that not every concern needs to be addressed—focus only on the concerns the client actively engages with during the conversation.
+     Specifically, you need to ensure that the counselor works collaboratively with the client to identify practical, actionable next steps that address the challenges previously discussed. The counselor should guide the client through creating solutions, offering suggestions if needed, and ensuring that the proposed steps align with the client’s current needs and readiness.
+
+
+     Key Elements of Exploring Next Steps:
+       1. Collaboration: The counselor should actively involve the client in exploring next steps, ensuring the client feels empowered and heard.
+       2. Relevance: The suggested next steps should directly address the client’s presenting concerns and challenges identified earlier in the conversation.
+       3. Feasibility: The proposed steps should be realistic and achievable based on the client’s circumstances and abilities.
+       4. Encouragement: The counselor should validate the client’s efforts and encourage them to take actionable steps toward resolution.
+       5. Clarity: The counselor should ensure that the next steps are clear and well-defined, avoiding vague or overly broad suggestions.
+       6. Prioritization: The counselor should focus on addressing the concerns that the client actively wants to discuss, rather than attempting to resolve all of the client's concerns.
+    
+     Instructions:
+       1. Read the input conversation carefully, focusing specifically on the counselor's efforts to explore next steps with the client.
+       2. Assess whether the counselor’s messages effectively help the client identify clear, actionable steps to address their presenting concerns.
+       3. Determine if the counselor’s approach is collaborative, encouraging, and tailored to the client’s needs and readiness.
+       4. Identify any missed opportunities to explore relevant next steps or any instances where the counselor’s suggestions were vague, irrelevant, or unrealistic.
+    
+     Output Format (JSON):
+     {{
+       "explore_next_steps": [1 if the counselor effectively explores clear, actionable, and relevant next steps with the client for the concerns the client actively wants to address, 0 if the counselor attempted to explore next steps but the client’s actively discussed concerns were not fully addressed or the steps were unclear or insufficient, -1 if exploring next steps was not necessary in this context],
+       "explanation": [string, providing specific examples where the counselor succeeded or failed in exploring next steps]
+     }}
+   score_col:
+     - "explore_next_steps"
+   full_history: true
+  
+supporting_resources:
+   prompt: |
+     You are an expert editor who focuses on text messages sent by crisis counselors to clients in need. Your job is to review messages sent by counselors to clients and determine whether the counselor appropriately offers supporting resources to help address the client’s presenting concerns.
+     Specifically, you need to ensure that the resources provided by the counselor are:
+       1. Aligned with Fixing the Problem: The resources should be relevant to the client’s specific challenges and address the concerns raised during the conversation.
+       2. Realistic and Actionable: The resources should be feasible for the client to use, given the nature of this text-based counseling service. Example of resources can include exercises, links to outside resources, hotlines, or actionable suggestions. Not all types of resources should be required. The resources should reflect the constraints of the counseling service, which does not include long-term relationships or in-person counseling.
+       3. Supportive: The resources should empower the client by providing meaningful options or solutions, while avoiding overly generic or irrelevant suggestions.
+    
+     Key Elements of Offering Supporting Resources:
+       1. Relevance: The resources should directly address the client’s presenting concerns or challenges.
+       2. Feasibility: The resources should be practical and easy to access or implement within the constraints of this counseling service.
+       3. Tailoring: The counselor should customize the resources to the client’s situation when possible, avoiding overly generic or unrelated suggestions.
+       4. Clarity: The counselor should communicate the resources clearly and ensure the client understands how to use or access them.
+       5. Appropriateness: The counselor should recognize when offering resources is unnecessary or irrelevant based on the client’s specific needs and the stage of the conversation.
+     Instructions:
+       1. Read the input conversation carefully, focusing specifically on whether the counselor offers supporting resources.
+       2. Assess whether the counselor’s resources are relevant, actionable, and tailored to the client’s needs, given the constraints of this text-based counseling service.
+       3. Determine if the counselor’s approach is clear and supportive, or identify if the resources offered are insufficient, irrelevant, or inappropriate.
+       4. If resources are unnecessary for the specific situation, indicate that in your evaluation.
+    
+     Output Format (JSON):
+     {{
+       "offer_resources": [1 if the counselor provides relevant and actionable resources, 0 if the resources provided are insufficient, irrelevant, or inappropriate, -1 if offering resources was unnecessary or irrelevant in this context],
+       "explanation": [string, providing specific examples where the counselor succeeded or failed in offering supporting resources]
+     }}
+   score_col:
+     - "offer_resources"
+   full_history: true
+
+end_conversation:
+   prompt: |
+     You are an expert editor who focuses on text messages sent by crisis counselors to clients in need. Your job is to review messages sent by counselors to clients and determine whether the counselor’s messages appropriately conclude the conversation.
+     Specifically, you need to ensure that the counselor ends the conversation in a way that is non-abrupt, appropriate for the stage of the conversation, and leaves the client feeling supported. While emotional reassurance, summarizing key takeaways, and providing clear closure can enhance the closing, the conversation does not need to include all these elements. The key is that the conversation ends in a manner that provides resolution and ensures the client knows what to expect after the interaction ends.
+
+     Key Elements of Ending the Conversation:
+       1. Appropriateness: The tone and timing of the ending should align with the client’s needs and the stage of the conversation. The counselor should avoid abrupt or premature conclusions.
+       2. Resolution: The conversation should leave the client with a sense of closure and support, ensuring they understand the conversation has ended.
+       3. Optional Enhancements: When applicable, the counselor may include elements such as emotional reassurance, summarizing key takeaways, or providing a clear closing statement to further enhance the ending.
+
+     Instructions:
+       1. Read the input conversation carefully, focusing specifically on how the counselor ends the conversation.
+       2. Assess whether the counselor’s closing is appropriate, non-abrupt, and provides resolution for the client.
+       3. Determine if the counselor’s ending aligns with the client’s needs and stage of the conversation.
+       4. Identify any missed opportunities to provide a better sense of resolution or to enhance the closing with additional elements (e.g., reassurance or summary).
+
+
+     Output Format (JSON):
+     {{
+        "end_conversation": [1 if the counselor ends the conversation appropriately and non-abruptly, 0 if the ending is abrupt, insufficient, or leaves the client without resolution],
+        "explanation": [string, providing specific examples where the counselor succeeded or failed in ending the conversation appropriately]
+     }}
+   score_col:
+     - "end_conversation"
+   full_history: true
+
+empathy_chaining:
+  prompt: |
+    You are an expert editor who reviews text messages sent by crisis counselors to clients in need.
+    Your job is to analyze the counselor’s messages and determine how many contain **multiple empathy statements strung together** in a single message.
+    
+    **Definition of Empathy Chaining:**  
+    - Empathy statements acknowledge the client's feelings, experiences, or struggles.
+    - "Empathy chaining" occurs when **two or more** empathy statements are combined in a single message.
+    
+    **Examples of Empathy Statements:**
+    - "That sounds really overwhelming."
+    - "I can see why that would be frustrating."
+    - "It makes sense that you’re feeling this way."
+
+    **Examples of Empathy Chaining:**
+    1. "I understand that navigating these feelings can be challenging, especially when you don't feel understood by those around you. It's important that you're reaching out."
+    2. "I see that you are considering working on the relationships with those you still have contact with, which is a positive step. It's encouraging that you want to make amends."
+    
+    **Instructions:**
+    1. Read the input conversation carefully.
+    2. Identify messages sent by the counselor that contain **two or more** distinct empathy statements.
+    3. Count the total number of these messages.
+
+    **Output Format (JSON):**
+    {{
+      "empathy_chained_messages": [List of counselor messages that contain multiple empathy statements],
+      "n_empathy_chained_messages": [Total count of messages with empathy chaining]
+    }}
+
+    **Example Output:**
+    {{
+      "empathy_chained_messages": ["I see that you are considering working on the relationships with those you still have contact with, which is a positive step. It's encouraging that you want to make amends."],
+      "n_empathy_chained_messages": 1
+    }}
+  score_col:
+    - "n_empathy_chained_messages"
+  full_history: false
+
+questions:
+  prompt: |
+    You are an expert editor who reviews text messages sent by crisis counselors to clients in need.
+    Your job is to analyze the conversation and count the number of messages in which the counselor **asks a question**.
+
+    **Definition of a Question:**
+    - Any sentence that seeks information or invites the client to respond.
+    - Includes **open-ended** (e.g., "Can you tell me more about that?") and **closed-ended** (e.g., "Are you feeling safe right now?") questions.
+
+    **Examples of Questions:**
+    - "Can you tell me more about what's been going on?"
+    - "How has this situation been affecting you emotionally?"
+    - "Are you currently in a safe environment?"
+    
+    **Instructions:**
+    1. Read the input conversation carefully.
+    2. Identify messages sent by the counselor that **contain at least one question**.
+    3. Count the total number of these messages.
+
+    **Output Format (JSON):**
+    {{
+      "question_messages": [List of counselor messages that contain questions],
+      "n_question_messages": [Total count of messages that contain questions]
+    }}
+
+    **Example Output:**
+    {{
+      "question_messages": ["How has this situation been affecting you emotionally?", "Are you currently in a safe environment?"],
+      "n_question_messages": 2
+    }}
+  score_col:
+    - "n_question_messages"
+  full_history: false

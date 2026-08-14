@@ -1,0 +1,16 @@
+# config.yaml
+
+# Paths
+benchmark_csv_path: "/Users/akshayswaminathan/vf_copilot/prompt_eng/outputs/prompt_experiment_outputs_2024-08-18_with_human_responses.csv"
+output_dir: "data/benchmark/"
+
+# Model Configurations
+model: "gpt-4o"
+
+# Logging Configuration
+log_level: "INFO"
+
+# Other Configurations
+retry_delay_seconds: 5
+max_retries: 3
+# num_rows_to_process: None 

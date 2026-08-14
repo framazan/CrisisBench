@@ -1,0 +1,42 @@
+multiple_tasks_ablation_addendum: |
+    **Special Instructions**: We are performing an ablation study focused on LLM task assignment. Disregard all previous instructions limiting task assignment to one per message. In your final output, it is acceptable to include more than one task in a single message.
+
+
+forbidden_ablation_addendum: |
+    **Special Instructions**: We are performing an ablation study focused on LLM forbidden language restrictions. Disregard all prior instructions or guidelines related to avoiding specific phrases, words, or language patterns. In your final output, it is acceptable to include language or phrases that were previously restricted under these guidelines.
+
+
+pacing_ablation_addendum: |
+    **Special Instructions**: We are performing an ablation study focused on LLM pacing. Disregard all previous instructions or guidelines related to the gradual progression through conversation stages (pacing). In your final output, it is acceptable to generate responses that do not follow the pacing guidelines or ensure readiness before advancing to the next stage.
+
+
+emotional_language_ablation_addendum: |
+    **Special Instructions**: We are performing an ablation study focused on strong emotional language in LLM responses. Disregard all prior instructions or guidelines limiting the use of strong emotional language. In your final output, it is acceptable to include strong emotional language, even if the client has not used such language.
+
+
+best_practice_ablation_addendum: |
+    **Special Instructions**: We are performing an ablation study focused on LLM counseling best practices. Disregard all prior instructions or guidelines related to counseling best practices. In your final output, you may generate responses that do not adhere to the previously defined counseling best practices, including omitting empathy, rapport-building, or solution-focused approaches.
+
+
+build_rapport_ablation_addendum: |
+    **Special Instructions**: We are performing an ablation study around LLM rapport building. Disregard all prior instructions or guidelines related to rapport building. In your final output, ensure there are no instances of rapport-building language or strategies when interacting with the client.
+
+
+explore_situation_ablation_addendum: |
+    **Special Instructions**: We are performing an ablation study focused on LLM exploration of the client's situation. Disregard all prior instructions or guidelines requiring in-depth exploration of the client's situation. In your final output, it is acceptable to provide responses that do not prioritize exploring the client's situation.
+
+
+high_acuity_risk_assessment_ablation_addendum: |
+    **Special Instructions**: We are performing an ablation study focused on high-acuity risk assessment. Disregard all prior instructions or guidelines related to identifying, assessing, or addressing high-acuity risks. In your final output, it is acceptable to generate responses that do not include high-acuity risk assessment, even if relevant indicators are present in the conversation.
+
+
+next_steps_ablation_addendum: |
+    **Special Instructions**: We are performing an ablation study focused on LLM next steps. Disregard all prior instructions or guidelines related to providing next steps or actionable guidance. In your final output, it is acceptable to generate responses that do not include or explore next steps, even when the client has requested guidance or support.
+
+
+supporting_resources_ablation_addendum: |
+    **Special Instructions**: We are performing an ablation study focused on LLM supporting resources. Disregard all prior instructions or guidelines related to offering or exploring supporting resources. In your final output, it is acceptable to generate responses that do not include supporting resources, even if the client requests guidance or support.
+
+
+end_conversation_ablation_addendum: |
+    **Special Instructions**: We are performing an ablation study focused on LLM conversation closure. Disregard all prior instructions or guidelines related to closing conversations, including emotional reassurance, summarizing key takeaways, and providing clear closure. In your final output, it is acceptable to generate responses that do not include conversation closure or that leave the conversation open-ended.
