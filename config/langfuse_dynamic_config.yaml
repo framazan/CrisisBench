@@ -1,0 +1,172 @@
+# ─────────────────────────────────────────────────────────────────────────────
+# Dynamic Evals Pipeline
+# patient_prompts:
+#   Each entry can be a specific profile key (e.g. "financial_loss_0") OR
+#   a category name (e.g. "financial_loss") which expands to ALL matching
+#   profiles (financial_loss_0, financial_loss_1, ...).
+#   Special value "all" runs every profile in the prompts file.
+# ─────────────────────────────────────────────────────────────────────────────
+
+# ── Patient prompts to run ────────────────────────────────────────────────────
+patient_prompts:
+  - 'panic_attack_3'
+  - 'panic_attack_14'
+  - 'panic_attack_15'
+  - 'panic_attack_36'
+  - 'panic_attack_39'
+  - 'panic_attack_62'
+  - 'panic_attack_84'
+  - 'panic_attack_97'
+  - 'workplace_related_11'
+  - 'workplace_related_14'
+  - 'workplace_related_18'
+  - 'workplace_related_29'
+  - 'workplace_related_32'
+  - 'workplace_related_41'
+  - 'workplace_related_71'
+  - 'workplace_related_84'
+  - 'depression_3'
+  - 'depression_4'
+  - 'depression_11'
+  - 'depression_54'
+  - 'depression_62'
+  - 'depression_63'
+  - 'depression_77'
+  - 'depression_84'
+  - 'anxiety_11'
+  - 'anxiety_27'
+  - 'anxiety_29'
+  - 'anxiety_37'
+  - 'anxiety_45'
+  - 'anxiety_66'
+  - 'anxiety_79'
+  - 'anxiety_88'
+  - 'exam_or_study_related_3'
+  - 'exam_or_study_related_5'
+  - 'exam_or_study_related_19'
+  - 'exam_or_study_related_27'
+  - 'exam_or_study_related_47'
+  - 'exam_or_study_related_74'
+  - 'exam_or_study_related_86'
+  - 'exam_or_study_related_94'
+  - 'family_relationship_25'
+  - 'family_relationship_29'
+  - 'family_relationship_36'
+  - 'family_relationship_55'
+  - 'family_relationship_59'
+  - 'family_relationship_71'
+  - 'family_relationship_91'
+  - 'family_relationship_96'
+  - 'financial_loss_0'
+  - 'financial_loss_7'
+  - 'financial_loss_21'
+  - 'financial_loss_36'
+  - 'financial_loss_55'
+  - 'financial_loss_64'
+  - 'financial_loss_78'
+  - 'financial_loss_92'
+  - 'suicidality_13'
+  - 'suicidality_20'
+  - 'suicidality_28'
+  - 'suicidality_34'
+  - 'suicidality_37'
+  - 'suicidality_45'
+  - 'suicidality_56'
+  - 'suicidality_73'
+  - 'relationship_5'
+  - 'relationship_12'
+  - 'relationship_13'
+  - 'relationship_14'
+  - 'relationship_16'
+  - 'relationship_45'
+  - 'relationship_48'
+  - 'relationship_51'
+  - 'other_2'
+  - 'other_6'
+  - 'other_34'
+  - 'other_45'
+  - 'other_46'
+  - 'other_66'
+  - 'other_79'
+  - 'other_87'
+  - 'non-suicidal_self-injury_0'
+  - 'non-suicidal_self-injury_16'
+  - 'non-suicidal_self-injury_25'
+  - 'non-suicidal_self-injury_50'
+  - 'non-suicidal_self-injury_60'
+  - 'non-suicidal_self-injury_70'
+  - 'non-suicidal_self-injury_83'
+  - 'non-suicidal_self-injury_96'
+  - 'loneliness_10'
+  - 'loneliness_37'
+  - 'loneliness_44'
+  - 'loneliness_64'
+  - 'loneliness_72'
+  - 'loneliness_81'
+  - 'loneliness_82'
+  - 'loneliness_92'
+  # - "anxiety"        # expands to all anxiety_* profiles
+  # - "all"            # runs every profile in the prompts file
+
+# ── Source files ──────────────────────────────────────────────────────────────
+patient_profile_prompts_file: "/home/stanford/vf_copilot/evals/llm_patient/data/patient_profile_prompts.yaml"
+# patient_eval_prompts_file: "/home/stanford/vf_copilot/evals/llm_patient/patient_eval_prompts.yaml"
+patient_eval_prompts_file: "/home/stanford/vf_copilot/config/counselor_eval_rubric.yaml"
+realism_eval_prompts_file: "/home/stanford/vf_copilot/evals/llm_patient/patient_eval_prompts.yaml"
+
+# ── Dataset ───────────────────────────────────────────────────────────────────
+dataset:
+  description: "Dynamic eval final double prompt"
+
+# ── Dialogue generation ───────────────────────────────────────────────────────
+dialogue:
+  # Paths to prompt files used by the vf_copilot evals framework
+  counselor_config_path: "/home/stanford/vf_copilot/gradio_demo/prompts.yaml"
+  patient_editor_config_path: "/home/stanford/vf_copilot/evals/llm_patient/data/patient_profile_editor_prompts.yaml"
+
+  initial_counselor_message: "Hi there, to start can you tell me your name and a little bit about what's been going on?"
+  max_messages: 100
+
+  # Prompt keys (resolved from the respective config YAML files above)
+  counselor_prompt: "base_instructions3"
+  editor_prompt: 'second_call_with_history3'
+  patient_editor_prompt: null   # set to a key string to enable patient editing
+
+  # Models – only OPENAI_API_KEY is used
+  counselor_model: "gpt-5.2"
+  patient_model: "gpt-4.1"
+
+  counselor_api_url: "https://api.openai.com/v1/chat/completions"
+  counselor_api_key_env: "OPENAI_API_KEY"
+  patient_api_url: "https://api.openai.com/v1/chat/completions"
+  patient_api_key_env: "OPENAI_API_KEY"
+
+  counselor_temperature: 1
+  max_counselor_tokens: 400
+  max_patient_tokens: 200
+  patient_temperature: 0.5
+  counselor_reasoning_effort: "low"
+
+  # ── RAG settings (counselor draft prompt, every turn) ───────────────────
+  use_rag: False                       # Enable RAG-augmented counselor prompt
+  rag_embeddings_model: "text-embedding-3-large"           # e.g. "text-embedding-3-small" (required if use_rag is true)
+  historical_conversations: '/home/stanford/vf_copilot/langfuse_scripts/final_paper_analysis/200_perfect_scoring_historical_FOR_RAG.csv'       # Path to CSV with historical conversations (required if use_rag is true)
+  rag_top_k: 2                         # Number of similar (context, response) pairs to retrieve
+  counselor_rag_prompt: "rag_dynamic_instructions"  # Prompt key to use when RAG is active
+
+# ── Evaluation ────────────────────────────────────────────────────────────────
+eval:
+  realism_eval: true
+  # Subset of keys from patient_eval_prompts_file to run (comment out to skip)
+  prompts:
+    - counselor-eval-rubric
+    # - "language_patterns"
+    # - "presenting_concern"
+    # - "big_five_traits_simple"
+    # - "emotional_realism"
+  model: "gpt-4.1"
+  max_completion_tokens: 1800
+  temperature: 0.1
+
+# ── Concurrency ───────────────────────────────────────────────────────────────
+max_workers: 5

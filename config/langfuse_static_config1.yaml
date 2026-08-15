@@ -1,0 +1,72 @@
+# ─────────────────────────────────────────────────────────────────────────────
+# All prompts are stored in the Langfuse prompt library and fetched by name.
+# All LLM calls are logged as Langfuse traces linked to dataset run items.
+# ─────────────────────────────────────────────────────────────────────────────
+
+# ── Langfuse prompt names (created by step0_upload_prompts.py) ───────────────
+prompts:
+  generation: "copilot-system-prompt"      # the counselor system prompt
+  rubric_eval: "eval-rubric"               # 4-dimension rubric comparison
+  unit_tests:
+    empathy_chaining: "eval-empathy-chaining"
+    forbidden: "eval-forbidden"
+    multiple_tasks: "eval-multiple-tasks"
+    pacing: "eval-pacing"
+    questions: "eval-questions"
+    risk_assessment: "eval-risk-assessment"
+
+# ── Source prompt template files (for initial upload only) ───────────────────
+prompt_files:
+  generation: "/home/stanford/vf_copilot/data/prompts/base_prompt/base_instructions3.tmpl"
+  rubric_eval: "/home/stanford/vf_copilot/data/prompts/counselor_comparison/counselor_comparison.tmpl"
+  unit_tests:
+    empathy_chaining: "/home/stanford/vf_copilot/data/prompts/counselor_unit_tests_message_level/empathy_chaining.tmpl"
+    forbidden: "/home/stanford/vf_copilot/data/prompts/counselor_unit_tests_message_level/forbidden.tmpl"
+    multiple_tasks: "/home/stanford/vf_copilot/data/prompts/counselor_unit_tests_message_level/multiple_tasks.tmpl"
+    pacing: "/home/stanford/vf_copilot/data/prompts/counselor_unit_tests_message_level/pacing.tmpl"
+    questions: "/home/stanford/vf_copilot/data/prompts/counselor_unit_tests_message_level/questions.tmpl"
+    risk_assessment: "/home/stanford/vf_copilot/data/prompts/counselor_unit_tests_message_level/risk_assessment.tmpl"
+
+# ── Dataset ──────────────────────────────────────────────────────────────────
+dataset:
+  description: "Static benchmark: real counselor conversations, copilot vs human responses"
+  # NOTE: dataset name is supplied via --dataset-name CLI arg (not stored here)
+
+# ── Conversion (run when input is a raw dialogue CSV) ────────────────────────
+conversion:
+  conversation_column: "conversation"
+  filter_messages: 5
+
+# ── Generation LLM ────────────────────────────────────────────────────────────
+# LLM calls go through langfuse.openai (auto-traced). OPENAI_API_KEY must be
+# set in the environment.
+# NOTE: model and run_name are supplied via CLI args (not stored here)
+generation:
+  max_completion_tokens: 300
+  temperature: 1
+
+  # ── Editor prompt (optional second LLM call to refine the draft) ──────────
+  editor_prompt_file: '/home/stanford/vf_copilot/langfuse_scripts/counselor_editor_prompt.tmpl'          # Path to a .tmpl or text file with the editor prompt
+                                    # If null, no editor call is made (single-call generation)
+
+  # ── Counselor prompt config path (local YAML with prompt keys) ────────────
+  counselor_config_path: null       # Path to YAML file with prompt keys (e.g. prompts.yaml)
+  counselor_prompt: null            # Key inside counselor_config_path to use (e.g. "base_instructions3")
+                                    # If both are null, uses the Langfuse prompt library as before
+
+  # ── RAG settings ──────────────────────────────────────────────────────────
+  use_rag: false                    # Enable RAG-augmented counselor prompt
+  rag_embeddings_model: null        # e.g. "text-embedding-3-small" (required if use_rag is true)
+  historical_conversations: null    # Path to CSV with historical conversations (required if use_rag is true)
+  rag_top_k: 5                     # Number of similar (context, response) pairs to retrieve
+  rag_prompt_file: null             # Path to file with RAG prompt template (must contain {example_responses})
+
+
+# ── Eval LLM ─────────────────────────────────────────────────────────────────
+eval:
+  model: "gpt-4.1"
+  max_completion_tokens: 1800
+  temperature: 0.1
+
+# ── Concurrency ───────────────────────────────────────────────────────────────
+max_workers: 6
