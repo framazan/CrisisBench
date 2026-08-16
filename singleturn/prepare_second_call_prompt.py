@@ -42,13 +42,13 @@ if __name__ == "__main__":
     
     parser.add_argument(
         "--copilot_data_file",
-        default="data/for_prompting/copilot_data.csv",
+        default="data/singleturn/for_prompting/copilot_data.csv",
         help="Path to the copilot data CSV file"
     )
     
     parser.add_argument(
         "--output_file",
-        default="data/for_prompting/second_call_prompt_input.csv",
+        default="data/singleturn/for_prompting/second_call_prompt_input.csv",
         help="Path to save the output CSV file"
     )
     

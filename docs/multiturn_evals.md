@@ -17,15 +17,15 @@ To evaluate a counselor interactively, you must first create LLM Patient Profile
      --traits_file data/llm_inference/extracted_completions/patient_profiles_deidentified.csv \
      --sampled_convos_file data/llm_inference/extracted_completions/sample_conversations_for_patient_profiles.csv \
      --deid_convo_file data/llm_inference/extracted_completions/sampled_for_patient_profiles_deid.csv \
-     --output_file data/patient_profiles/generated_patient_profiles.csv \
-     --output_yaml data/patient_profiles/patient_profile_prompts.yaml
+     --output_file data/multiturn/patient_profiles/generated_patient_profiles.csv \
+     --output_yaml data/multiturn/patient_profiles/patient_profile_prompts.yaml
    ```
 
 3. **(Optional) Save Prompts to History**:
    To save the generated profiles to your historical prompts directory for version control:
    ```bash
    python multiturn/save_historical_prompts.py \
-       --input_file data/patient_profiles/patient_profile_prompts.yaml \
+       --input_file data/multiturn/patient_profiles/patient_profile_prompts.yaml \
        --output_dir multiturn/historical_prompts/$(date +%m-%d-%Y)
    ```
 

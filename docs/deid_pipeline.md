@@ -13,7 +13,7 @@ Save a CSV with the raw data you want to run through the de-id pipeline.
 Ensure this CSV has a `uid` column corresponding to the primary key.
 
 ```bash
-mkdir -p data/for_prompting
+mkdir -p data/singleturn/for_prompting
 mkdir -p data/llm_inference/extracted_completions
 ```
 
@@ -22,7 +22,7 @@ Merge your raw conversations with the De-identification prompt template to creat
 
 ```bash
 python singleturn/build_prompted_datasets.py \
-    -f data/for_prompting/sample_conversations.csv \
+    -f data/singleturn/for_prompting/sample_conversations.csv \
     -p data/prompts/deid \
     -o data/prompted/ \
     -n deid_job \

@@ -11,11 +11,11 @@ For any of the static evaluations, the core workflow is exactly the same:
 ### 1. Build the Prompted Dataset
 First, you take your raw conversation CSV and join it with the specific prompt template for the task you want to run. This creates a `.jsonl` file ready for batch processing.
 
-*(Note: If you are just testing the pipeline, you can use the provided `data/for_prompting/dummy_raw_conversations.csv` as your input file).*
+*(Note: If you are just testing the pipeline, you can use the provided `data/singleturn/for_prompting/dummy_raw_conversations.csv` as your input file).*
 
 ```bash
 python3 singleturn/build_prompted_datasets.py \
-    -f data/for_prompting/your_raw_conversations.csv \
+    -f data/singleturn/for_prompting/your_raw_conversations.csv \
     -p data/prompts/<prompt_folder> \
     -o data/prompted/ \
     -n <experiment_name> \
@@ -63,17 +63,17 @@ If you want to compare the LLM's static generation directly against the human co
 1. Convert raw dialogues to static eval format:
 ```bash
 python singleturn/convert_dialogue_to_static_eval_format.py \
-    data/for_prompting/dialogues.csv \
-    data/for_prompting/static_eval_input.csv \
+    data/singleturn/for_prompting/dialogues.csv \
+    data/singleturn/for_prompting/static_eval_input.csv \
     --conversation-column conversation
 ```
 2. Generate LLM responses using the Generic Pipeline above (Step 1-3).
 3. Combine human responses with LLM generated responses:
 ```bash
 python singleturn/prepare_comparison_data.py \
-    data/for_prompting/static_eval_input.csv \
+    data/singleturn/for_prompting/static_eval_input.csv \
     data/llm_inference/extracted_completions/<generation_file>.csv \
-    data/for_prompting/static_eval_comparison.csv
+    data/singleturn/for_prompting/static_eval_comparison.csv
 ```
 4. Run the Generic Pipeline (Steps 1-3) again, but this time using the `static_eval_comparison.csv` and a comparison rubric prompt.
 5. Analyze the scores:

@@ -1,23 +1,23 @@
 # CrisisBench: An Evaluation Suite for Crisis Counseling AI
 
-[comment]: <> (When using the img tag, which allows us to specify size, src has to be a URL.)
-<img src="logo.png" alt="CrisisBench logo" width="480"/>
+<img src="logo.png" alt="CrisisBench banner, with Stanford and the Vandrevala Foundation's logos." width="480"/>
 
 <!-- Badges -->
 <a href="https://github.com/framazan/CrisisBench"><img alt="GitHub Repo stars" src="https://img.shields.io/github/stars/framazan/CrisisBench"></a>&nbsp;
 <a><img alt="GitHub contributors" src="https://img.shields.io/badge/contributors-18-brightgreen"></a>&nbsp;
 <a href="https://github.com/framazan/CrisisBench/blob/main/LICENSE"><img alt="License" src="https://img.shields.io/github/license/framazan/CrisisBench?color=blue"></a>
 
-**CrisisBench** is a comprehensive evaluation suite for large language models (LLMs) used in text-based crisis counseling. This repository contains tools for simulating crisis conversations, evaluating model performance across specific metrics, and de-identifying crisis transcript data.
+**CrisisBench** is a evaluation suite for large language models (LLMs) used in text-based crisis counseling. This repository contains tools for simulating crisis conversations, evaluating model performance across specific metrics, and de-identifying crisis transcript data.
 
 The repository is organized into the following key components:
 
 - `de_id/`: Scripts and utilities for de-identifying real-world crisis text transcripts while preserving context.
-- `singleturn/`: Code to evaluate LLMs in single-turn conversational environments (using static message-level rubrics).
-- `multiturn/`: Code to run and evaluate multi-turn dialogues between counselor systems and patient LLMs.
-- `utils/`: Shared utilities for model prompting, file IO, and data processing.
+- `singleturn/`: Code to evaluate LLMs in single-turn conversational environments.
+- `multiturn/`: Code to run and evaluate multi-turn dialogues between counselor systems and patient LLMs, by generating patient LLM profiles from real-world counseling text.
 - `prompts/rubrics/`: Configuration files and yaml templates containing the rubrics used by the LLM Judges.
-- `data/patient_profiles/`: Templates and configurations for patient LLMs (dummy profiles are provided for open-source).
+- `data/multiturn/patient_profiles/`: Templates and configurations for patient LLMs.
+- `data/singleturn/for_prompting/`: Data inputs, outputs, and intermediate states for single-turn testing.
+- `utils/`: Shared utilities for model prompting, file IO, and data processing.
 
 ## Documentation
 
@@ -90,7 +90,10 @@ python -m de_id.run_de_id_pipeline
 
 ## Security and Privacy
 
-For privacy and security reasons, real patient profiles derived from the hotline metadata are **not included** in this open-source release. We provide dummy patient profiles located in `data/patient_profiles/dummy_patient_profiles.yaml` that can be used to run and test the pipeline safely.
+For privacy and security reasons, real patient profiles derived from the hotline metadata are **not included** in this open-source release. We provide dummy patient profiles located in `data/multiturn/patient_profiles/dummy_patient_profiles.yaml` that can be used to run and test the pipeline safely.
+
+## Acknowledgements
+We extend our deepest gratitude to the Vandrevala Foundation and their generous sponsors for providing the resources that made this analysis possible. We deeply appreciate their time and cooperation, which allowed us to integrate seamlessly with their counseling and IT teams.
 
 ## Citation
 

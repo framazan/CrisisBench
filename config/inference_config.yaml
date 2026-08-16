@@ -3,7 +3,7 @@ eval_counselor_checklist:
   api_url: https://shcopenaisandbox.openai.azure.com/openai/deployments/gpt-4o/chat/completions?api-version=2025-01-01-preview
   column: conversation
   engine: openai-batch
-  input_csv: data/for_prompting/perfect_score_dialogues_040525_130831.csv
+  input_csv: data/singleturn/for_prompting/perfect_score_dialogues_040525_130831.csv
   max_requests: 5
   max_tokens: 500
   model: gpt-4o
@@ -14,7 +14,7 @@ extract_convo_traits:
   api_url: https://shcopenaisandbox.openai.azure.com/openai/deployments/gpt-4o/chat/completions?api-version=2025-01-01-preview
   column: conversation
   engine: openai-batch
-  input_csv: data/for_prompting/perfect_score_dialogues_040525_130831.csv
+  input_csv: data/singleturn/for_prompting/perfect_score_dialogues_040525_130831.csv
   max_requests: 5
   max_tokens: 500
   model: gpt-4o
@@ -25,7 +25,7 @@ dialogue_evals:
 #   api_url: https://shcopenaisandbox.openai.azure.com/openai/deployments/gpt-4o/chat/completions?api-version=2025-01-01-preview
 #   column: conversation
 #   engine: openai-batch
-#   input_csv: data/for_prompting/generated_dialogues_for_eval.csv
+#   input_csv: data/singleturn/for_prompting/generated_dialogues_for_eval.csv
 #   max_requests: 5
 #   max_tokens: 500
 #   model: gpt-4o
@@ -35,7 +35,7 @@ dialogue_evals:
 #   api_url: https://shcopenaisandbox.openai.azure.com/openai/deployments/gpt-4o/chat/completions?api-version=2025-01-01-preview
 #   column: conversation_plus_profile
 #   engine: openai-batch
-#   input_csv: data/for_prompting/generated_dialogues_for_eval.csv
+#   input_csv: data/singleturn/for_prompting/generated_dialogues_for_eval.csv
 #   max_requests: 5
 #   max_tokens: 500
 #   model: gpt-4o
@@ -45,7 +45,7 @@ dialogue_evals:
   api_url: https://shcopenaisandbox.openai.azure.com/openai/deployments/gpt-4o/chat/completions?api-version=2025-01-01-preview
   column: conversation
   engine: openai-batch
-  input_csv: data/for_prompting/generated_dialogues_for_eval.csv
+  input_csv: data/singleturn/for_prompting/generated_dialogues_for_eval.csv
   max_requests: 5
   max_tokens: 500
   model: gpt-4o
@@ -55,7 +55,7 @@ dialogue_evals:
   api_url: https://shcopenaisandbox.openai.azure.com/openai/deployments/gpt-4o/chat/completions?api-version=2025-01-01-preview
   column: conversation
   engine: openai-batch
-  input_csv: data/for_prompting/generated_dialogues_for_eval.csv
+  input_csv: data/singleturn/for_prompting/generated_dialogues_for_eval.csv
   max_requests: 5
   max_tokens: 500
   model: gpt-4o
@@ -67,7 +67,7 @@ dialogue_generation_20250509_114018:
   column: convo_history
   engine: openai-batch
   generation_params: config/generation_params.json
-  input_csv: data/for_prompting/dialogue_prompts_turn_1.csv
+  input_csv: data/singleturn/for_prompting/dialogue_prompts_turn_1.csv
   max_requests: 4
   max_tokens: 500
   model: gpt-4o
@@ -78,7 +78,7 @@ static_evals_comparison:
   api_url: https://shcopenaisandbox.openai.azure.com/openai/deployments/gpt-4o/chat/completions?api-version=2025-01-01-preview
   column: comparison_input
   engine: openai-batch
-  input_csv: data/for_prompting/static_eval_comparison.csv
+  input_csv: data/singleturn/for_prompting/static_eval_comparison.csv
   max_requests: 4
   max_tokens: 1000
   model: gpt-4o
@@ -88,7 +88,7 @@ static_evals_comparison:
   api_url: https://shcopenaisandbox.openai.azure.com/openai/deployments/gpt-4o/chat/completions?api-version=2025-01-01-preview
   column: comparison_input
   engine: openai-batch
-  input_csv: data/for_prompting/static_eval_comparison.csv
+  input_csv: data/singleturn/for_prompting/static_eval_comparison.csv
   max_requests: 4
   max_tokens: 500
   model: gpt-4o
@@ -100,7 +100,7 @@ static_evals_generation:
   column: convo_history
   engine: openai-batch
   generation_params: config/generation_params.json
-  input_csv: data/for_prompting/static_eval_input.csv
+  input_csv: data/singleturn/for_prompting/static_eval_input.csv
   max_requests: 4
   max_tokens: 2000
   model: o1-mini
@@ -111,7 +111,7 @@ static_evals_generation:
   column: convo_history
   engine: openai-batch
   generation_params: config/generation_params.json
-  input_csv: data/for_prompting/static_eval_input.csv
+  input_csv: data/singleturn/for_prompting/static_eval_input.csv
   max_requests: 4
   max_tokens: 200
   model: claude-3-7-sonnet-20250219-v1
@@ -122,7 +122,7 @@ static_evals_generation:
   column: convo_history
   engine: openai-batch
   generation_params: config/generation_params.json
-  input_csv: data/for_prompting/static_eval_input.csv
+  input_csv: data/singleturn/for_prompting/static_eval_input.csv
   max_requests: 4
   max_tokens: 200
   model: gemini-2.0-flash
@@ -133,7 +133,7 @@ static_evals_generation:
   column: convo_history
   engine: openai-batch
   generation_params: config/generation_params.json
-  input_csv: data/for_prompting/static_eval_input.csv
+  input_csv: data/singleturn/for_prompting/static_eval_input.csv
   max_requests: 4
   max_tokens: 200
   model: gemini-1.5-pro
@@ -144,7 +144,7 @@ static_evals_generation:
   column: convo_history
   engine: openai-batch
   generation_params: config/generation_params.json
-  input_csv: data/for_prompting/static_eval_input.csv
+  input_csv: data/singleturn/for_prompting/static_eval_input.csv
   max_requests: 4
   max_tokens: 200
   model: Llama-3.3-70B-Instruct
@@ -152,7 +152,7 @@ static_evals_generation:
   prompt_dir: data/prompts/base_prompt
 dialogue_generation_20250509_135529:
 - name: dialogue_turn_1_patient
-  input_csv: data/for_prompting/dialogue_prompts_turn_1.csv
+  input_csv: data/singleturn/for_prompting/dialogue_prompts_turn_1.csv
   prompt_dir: data/prompts/dialogue_generation/patient_turn_1
   column: convo_history
   model: gpt-4o
@@ -164,7 +164,7 @@ dialogue_generation_20250509_135529:
   generation_params: config/generation_params.json
 dialogue_generation_20250509_140239:
 - name: dialogue_turn_1_patient
-  input_csv: data/for_prompting/dialogue_prompts_turn_1.csv
+  input_csv: data/singleturn/for_prompting/dialogue_prompts_turn_1.csv
   prompt_dir: data/prompts/dialogue_generation/anxiety_1
   column: convo_history
   model: gpt-4o
@@ -176,7 +176,7 @@ dialogue_generation_20250509_140239:
   generation_params: config/generation_params.json
 dialogue_generation_20250509_141426:
 - name: dialogue_turn_1_patient
-  input_csv: data/for_prompting/dialogue_prompts_turn_1.csv
+  input_csv: data/singleturn/for_prompting/dialogue_prompts_turn_1.csv
   prompt_dir: data/prompts/dialogue_generation/anxiety_1
   column: convo_history
   model: gpt-4o
@@ -188,7 +188,7 @@ dialogue_generation_20250509_141426:
   generation_params: config/generation_params.json
 dialogue_generation_20250509_141626:
 - name: dialogue_turn_1_patient
-  input_csv: data/for_prompting/dialogue_prompts_turn_1.csv
+  input_csv: data/singleturn/for_prompting/dialogue_prompts_turn_1.csv
   prompt_dir: data/prompts/dialogue_generation/anxiety_1
   column: convo_history
   model: gpt-4o
@@ -199,7 +199,7 @@ dialogue_generation_20250509_141626:
   api_key_env: OPENAI_API_KEY_VICKY
   generation_params: config/generation_params.json
 - name: dialogue_turn_2_counselor
-  input_csv: data/for_prompting/dialogue_prompts_turn_2.csv
+  input_csv: data/singleturn/for_prompting/dialogue_prompts_turn_2.csv
   prompt_dir: data/prompts/dialogue_generation/base_instructions3
   column: convo_history
   model: claude-3-7-sonnet-20250219-v1
@@ -210,7 +210,7 @@ dialogue_generation_20250509_141626:
   api_key_env: CLAUDE_API_KEY
   generation_params: config/generation_params.json
 - name: dialogue_turn_3_patient
-  input_csv: data/for_prompting/dialogue_prompts_turn_3.csv
+  input_csv: data/singleturn/for_prompting/dialogue_prompts_turn_3.csv
   prompt_dir: data/prompts/dialogue_generation/anxiety_1
   column: convo_history
   model: gpt-4o
@@ -221,7 +221,7 @@ dialogue_generation_20250509_141626:
   api_key_env: OPENAI_API_KEY_VICKY
   generation_params: config/generation_params.json
 - name: dialogue_turn_4_counselor
-  input_csv: data/for_prompting/dialogue_prompts_turn_4.csv
+  input_csv: data/singleturn/for_prompting/dialogue_prompts_turn_4.csv
   prompt_dir: data/prompts/dialogue_generation/base_instructions3
   column: convo_history
   model: claude-3-7-sonnet-20250219-v1
@@ -232,7 +232,7 @@ dialogue_generation_20250509_141626:
   api_key_env: CLAUDE_API_KEY
   generation_params: config/generation_params.json
 - name: dialogue_turn_5_patient
-  input_csv: data/for_prompting/dialogue_prompts_turn_5.csv
+  input_csv: data/singleturn/for_prompting/dialogue_prompts_turn_5.csv
   prompt_dir: data/prompts/dialogue_generation/anxiety_1
   column: convo_history
   model: gpt-4o
@@ -243,7 +243,7 @@ dialogue_generation_20250509_141626:
   api_key_env: OPENAI_API_KEY_VICKY
   generation_params: config/generation_params.json
 - name: dialogue_turn_6_counselor
-  input_csv: data/for_prompting/dialogue_prompts_turn_6.csv
+  input_csv: data/singleturn/for_prompting/dialogue_prompts_turn_6.csv
   prompt_dir: data/prompts/dialogue_generation/base_instructions3
   column: convo_history
   model: claude-3-7-sonnet-20250219-v1
@@ -254,7 +254,7 @@ dialogue_generation_20250509_141626:
   api_key_env: CLAUDE_API_KEY
   generation_params: config/generation_params.json
 - name: dialogue_turn_7_patient
-  input_csv: data/for_prompting/dialogue_prompts_turn_7.csv
+  input_csv: data/singleturn/for_prompting/dialogue_prompts_turn_7.csv
   prompt_dir: data/prompts/dialogue_generation/anxiety_1
   column: convo_history
   model: gpt-4o
@@ -265,7 +265,7 @@ dialogue_generation_20250509_141626:
   api_key_env: OPENAI_API_KEY_VICKY
   generation_params: config/generation_params.json
 - name: dialogue_turn_8_counselor
-  input_csv: data/for_prompting/dialogue_prompts_turn_8.csv
+  input_csv: data/singleturn/for_prompting/dialogue_prompts_turn_8.csv
   prompt_dir: data/prompts/dialogue_generation/base_instructions3
   column: convo_history
   model: claude-3-7-sonnet-20250219-v1
@@ -276,7 +276,7 @@ dialogue_generation_20250509_141626:
   api_key_env: CLAUDE_API_KEY
   generation_params: config/generation_params.json
 - name: dialogue_turn_9_patient
-  input_csv: data/for_prompting/dialogue_prompts_turn_9.csv
+  input_csv: data/singleturn/for_prompting/dialogue_prompts_turn_9.csv
   prompt_dir: data/prompts/dialogue_generation/anxiety_1
   column: convo_history
   model: gpt-4o
@@ -287,7 +287,7 @@ dialogue_generation_20250509_141626:
   api_key_env: OPENAI_API_KEY_VICKY
   generation_params: config/generation_params.json
 - name: dialogue_turn_10_counselor
-  input_csv: data/for_prompting/dialogue_prompts_turn_10.csv
+  input_csv: data/singleturn/for_prompting/dialogue_prompts_turn_10.csv
   prompt_dir: data/prompts/dialogue_generation/base_instructions3
   column: convo_history
   model: claude-3-7-sonnet-20250219-v1
@@ -298,7 +298,7 @@ dialogue_generation_20250509_141626:
   api_key_env: CLAUDE_API_KEY
   generation_params: config/generation_params.json
 - name: dialogue_turn_11_patient
-  input_csv: data/for_prompting/dialogue_prompts_turn_11.csv
+  input_csv: data/singleturn/for_prompting/dialogue_prompts_turn_11.csv
   prompt_dir: data/prompts/dialogue_generation/anxiety_1
   column: convo_history
   model: gpt-4o
@@ -310,7 +310,7 @@ dialogue_generation_20250509_141626:
   generation_params: config/generation_params.json
 dialogue_generation_20250509_143015:
 - name: dialogue_turn_1_patient
-  input_csv: data/for_prompting/dialogue_prompts_turn_1.csv
+  input_csv: data/singleturn/for_prompting/dialogue_prompts_turn_1.csv
   prompt_dir: data/prompts/dialogue_generation/anxiety_1
   column: convo_history
   model: gpt-4o
@@ -321,7 +321,7 @@ dialogue_generation_20250509_143015:
   api_key_env: OPENAI_API_KEY_VICKY
   generation_params: config/generation_params.json
 - name: dialogue_turn_2_counselor
-  input_csv: data/for_prompting/dialogue_prompts_turn_2.csv
+  input_csv: data/singleturn/for_prompting/dialogue_prompts_turn_2.csv
   prompt_dir: data/prompts/dialogue_generation/base_instructions3
   column: convo_history
   model: gpt-4o
@@ -332,7 +332,7 @@ dialogue_generation_20250509_143015:
   api_key_env: OPENAI_API_KEY_SHC
   generation_params: config/generation_params.json
 - name: dialogue_turn_3_patient
-  input_csv: data/for_prompting/dialogue_prompts_turn_3.csv
+  input_csv: data/singleturn/for_prompting/dialogue_prompts_turn_3.csv
   prompt_dir: data/prompts/dialogue_generation/anxiety_1
   column: convo_history
   model: gpt-4o
@@ -343,7 +343,7 @@ dialogue_generation_20250509_143015:
   api_key_env: OPENAI_API_KEY_VICKY
   generation_params: config/generation_params.json
 - name: dialogue_turn_4_counselor
-  input_csv: data/for_prompting/dialogue_prompts_turn_4.csv
+  input_csv: data/singleturn/for_prompting/dialogue_prompts_turn_4.csv
   prompt_dir: data/prompts/dialogue_generation/base_instructions3
   column: convo_history
   model: gpt-4o
@@ -354,7 +354,7 @@ dialogue_generation_20250509_143015:
   api_key_env: OPENAI_API_KEY_SHC
   generation_params: config/generation_params.json
 - name: dialogue_turn_5_patient
-  input_csv: data/for_prompting/dialogue_prompts_turn_5.csv
+  input_csv: data/singleturn/for_prompting/dialogue_prompts_turn_5.csv
   prompt_dir: data/prompts/dialogue_generation/anxiety_1
   column: convo_history
   model: gpt-4o
@@ -365,7 +365,7 @@ dialogue_generation_20250509_143015:
   api_key_env: OPENAI_API_KEY_VICKY
   generation_params: config/generation_params.json
 - name: dialogue_turn_6_counselor
-  input_csv: data/for_prompting/dialogue_prompts_turn_6.csv
+  input_csv: data/singleturn/for_prompting/dialogue_prompts_turn_6.csv
   prompt_dir: data/prompts/dialogue_generation/base_instructions3
   column: convo_history
   model: gpt-4o
@@ -376,7 +376,7 @@ dialogue_generation_20250509_143015:
   api_key_env: OPENAI_API_KEY_SHC
   generation_params: config/generation_params.json
 - name: dialogue_turn_7_patient
-  input_csv: data/for_prompting/dialogue_prompts_turn_7.csv
+  input_csv: data/singleturn/for_prompting/dialogue_prompts_turn_7.csv
   prompt_dir: data/prompts/dialogue_generation/anxiety_1
   column: convo_history
   model: gpt-4o
@@ -387,7 +387,7 @@ dialogue_generation_20250509_143015:
   api_key_env: OPENAI_API_KEY_VICKY
   generation_params: config/generation_params.json
 - name: dialogue_turn_8_counselor
-  input_csv: data/for_prompting/dialogue_prompts_turn_8.csv
+  input_csv: data/singleturn/for_prompting/dialogue_prompts_turn_8.csv
   prompt_dir: data/prompts/dialogue_generation/base_instructions3
   column: convo_history
   model: gpt-4o
@@ -398,7 +398,7 @@ dialogue_generation_20250509_143015:
   api_key_env: OPENAI_API_KEY_SHC
   generation_params: config/generation_params.json
 - name: dialogue_turn_9_patient
-  input_csv: data/for_prompting/dialogue_prompts_turn_9.csv
+  input_csv: data/singleturn/for_prompting/dialogue_prompts_turn_9.csv
   prompt_dir: data/prompts/dialogue_generation/anxiety_1
   column: convo_history
   model: gpt-4o
@@ -409,7 +409,7 @@ dialogue_generation_20250509_143015:
   api_key_env: OPENAI_API_KEY_VICKY
   generation_params: config/generation_params.json
 - name: dialogue_turn_10_counselor
-  input_csv: data/for_prompting/dialogue_prompts_turn_10.csv
+  input_csv: data/singleturn/for_prompting/dialogue_prompts_turn_10.csv
   prompt_dir: data/prompts/dialogue_generation/base_instructions3
   column: convo_history
   model: gpt-4o
@@ -420,7 +420,7 @@ dialogue_generation_20250509_143015:
   api_key_env: OPENAI_API_KEY_SHC
   generation_params: config/generation_params.json
 - name: dialogue_turn_11_patient
-  input_csv: data/for_prompting/dialogue_prompts_turn_11.csv
+  input_csv: data/singleturn/for_prompting/dialogue_prompts_turn_11.csv
   prompt_dir: data/prompts/dialogue_generation/anxiety_1
   column: convo_history
   model: gpt-4o
