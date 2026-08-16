@@ -3,16 +3,10 @@
 [comment]: <> (When using the img tag, which allows us to specify size, src has to be a URL.)
 <img src="logo.png" alt="CrisisBench logo" width="480"/>
 
-<!-- Placeholders for badges -->
-<a href="https://github.com/framazan/CrisisBench">
-    <img alt="GitHub Repo stars" src="https://img.shields.io/github/stars/framazan/CrisisBench">
-</a>
-<a>
-    <img alt="GitHub contributors" src="https://img.shields.io/badge/contributors-18-brightgreen">
-</a>
-<a href="https://github.com/framazan/CrisisBench/blob/main/LICENSE">
-    <img alt="License" src="https://img.shields.io/github/license/framazan/CrisisBench?color=blue" />
-</a>
+<!-- Badges -->
+<a href="https://github.com/framazan/CrisisBench"><img alt="GitHub Repo stars" src="https://img.shields.io/github/stars/framazan/CrisisBench"></a>&nbsp;
+<a><img alt="GitHub contributors" src="https://img.shields.io/badge/contributors-18-brightgreen"></a>&nbsp;
+<a href="https://github.com/framazan/CrisisBench/blob/main/LICENSE"><img alt="License" src="https://img.shields.io/github/license/framazan/CrisisBench?color=blue"></a>
 
 **CrisisBench** is a comprehensive evaluation suite for large language models (LLMs) used in text-based crisis counseling. This repository contains tools for simulating crisis conversations, evaluating model performance across specific metrics, and de-identifying crisis transcript data.
 
