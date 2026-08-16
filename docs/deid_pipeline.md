@@ -21,7 +21,7 @@ mkdir -p data/llm_inference/extracted_completions
 Merge your raw conversations with the De-identification prompt template to create the JSONL file ready for batching:
 
 ```bash
-python singleturn/build_prompted_datasets.py \
+python utils/build_prompted_datasets.py \
     -f data/singleturn/for_prompting/sample_conversations.csv \
     -p data/prompts/deid \
     -o data/prompted/ \

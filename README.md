@@ -19,14 +19,6 @@ The repository is organized into the following key components:
 - `data/singleturn/for_prompting/`: Data inputs, outputs, and intermediate states for single-turn testing.
 - `utils/`: Shared utilities for model prompting, file IO, and data processing.
 
-## Documentation
-
-Please refer to the documentation files in the `docs/` directory for full instructions:
-- [Multi-Turn Evaluation](docs/multiturn_evals.md)
-- [Single-Turn Evaluation](docs/singleturn_evals.md)
-- [Langfuse UI Execution](docs/langfuse_evals.md)
-- [De-identification Pipeline](docs/deid_pipeline.md)
-
 ## Quick Start
 
 <!--quick-start-begin-->
@@ -34,7 +26,7 @@ Please refer to the documentation files in the `docs/` directory for full instru
 To set up the environment, clone the repository and install the required dependencies using `pip`:
 
 ```sh
-git clone https://github.com/yourusername/CrisisBench.git
+git clone https://github.com/framazan/CrisisBench.git
 cd CrisisBench
 pip install -r requirements.txt
 ```
@@ -43,49 +35,27 @@ Set up your `.env` file with the required API keys (e.g., `OPENAI_API_KEY`) to r
 
 ### Usage Guide
 
-CrisisBench offers two distinct paradigms for running evaluations depending on your workflow needs:
+CrisisBench provides two distinct frameworks for evaluating LLM counselors, depending on your needs. For step-by-step instructions on setting up datasets and running the pipelines, please refer to the detailed documentation linked below.
 
-#### Mode A: Manual Scripts Execution
-This mode uses core python scripts to generate text-file outputs and CSVs locally. It is lightweight and easy to run without any external dashboarding tools.
+<p align="center">
+  <img src="eval_diagram.png" alt="Diagram showing the difference between single-turn and multi-turn evaluations" width="800"/>
+</p>
 
-- **Multi-Turn Evaluation**: Generates full dialogues and outputs raw text files containing the patient/counselor transcripts and scores.
-  ```sh
-  python -m multiturn.generate_and_evaluate_dialogue ...
-  ```
+#### Single-Turn Evaluation
+The **Single-Turn Evaluation** framework tests how an LLM counselor responds to isolated, static crisis messages. It is designed to evaluate specific interventions (such as empathy, risk assessment, or active listening) on fixed message exchanges using message-level rubrics. This method is highly deterministic and lightweight. 
 
-- **Single-Turn Evaluation**: Tests systems on fixed message exchanges using a standard bash pipeline.
-  ```sh
-  bash singleturn/run_singleturn_pipeline.sh ...
-  ```
+For full instructions, see the [Single-Turn Evaluation Guide](docs/singleturn_evals.md).
 
-#### Mode B: Langfuse UI Execution
-This mode uses our custom CLI to hook directly into [Langfuse](https://langfuse.com), providing a rich web UI to track dialogue traces, view step-by-step LLM-judge scores, and visualize metrics on a dashboard. 
+#### Multi-Turn Evaluation
+The **Multi-Turn Evaluation** framework simulates an entire crisis conversation by pairing your LLM counselor against an interactive LLM-based "patient agent." The patient is prompted with a detailed clinical profile (generated from real-world hotline data). After the simulated conversation concludes, an LLM Judge evaluates the full transcript against a comprehensive, conversation-level rubric. This method tests the counselor's ability to maintain context, de-escalate effectively, and build rapport over time. 
 
-- **Dynamic (Multi-turn) UI Pipeline**:
-  ```sh
-  python multiturn/langfuse/run_pipeline.py \
-      --dataset-name dynamic-evals-v1 \
-      --run-name eval-run-1 \
-      --email admin@example.com --password yourpassword
-  ```
+For full instructions, see the [Multi-Turn Evaluation Guide](docs/multiturn_evals.md).
 
-- **Static (Single-turn) UI Pipeline**:
-  ```sh
-  python singleturn/langfuse/run_pipeline.py \
-      --input /path/to/raw_convos.csv \
-      --convert \
-      --dataset-name static-evals \
-      --run-name copilot-v1 \
-      --model gpt-4o \
-      --email admin@example.com --password yourpassword
-  ```
+#### Langfuse UI Integration
+For tracking runs, evaluating traces, and visualizing metrics on a rich web dashboard, CrisisBench integrates natively with Langfuse.
+- [Langfuse UI Setup Guide](docs/langfuse_setup.md)
+- [Langfuse UI Execution Guide](docs/langfuse_evals.md)
 
-#### De-identification Pipeline
-If you have access to real crisis logs, you must de-identify them to preserve patient privacy before using them to generate benchmarks. 
-
-```sh
-python -m de_id.run_de_id_pipeline
-```
 <!--quick-start-end-->
 
 ## Security and Privacy
@@ -103,7 +73,7 @@ If you use this software in your research, please cite our paper as below.
 @article{
 crisisbench2026,
 title={CrisisBench: An Evaluation Suite for Crisis Counseling AI},
-author={Filip Ramazan},
+author={Akshay Swaminathan and Filip Ramazan and Sharang Phadke and Kevina Wang and Ivan Lopez and Shaked Peleg Azzam and Gloria Ye and Chastin Chung and William Wang and Stephanie Stoll and Ivy Pham and Rebecca Hurwitz and Shreya Shah and Divyanjali Verma},
 journal={arXiv preprint arXiv:[Placeholder]},
 year={2026},
 url={[Placeholder for URL]}

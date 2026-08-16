@@ -14,7 +14,7 @@ First, you take your raw conversation CSV and join it with the specific prompt t
 *(Note: If you are just testing the pipeline, you can use the provided `data/singleturn/for_prompting/dummy_raw_conversations.csv` as your input file).*
 
 ```bash
-python3 singleturn/build_prompted_datasets.py \
+python3 utils/build_prompted_datasets.py \
     -f data/singleturn/for_prompting/your_raw_conversations.csv \
     -p data/prompts/<prompt_folder> \
     -o data/prompted/ \

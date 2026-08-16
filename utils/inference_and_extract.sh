@@ -84,7 +84,7 @@ mkdir -p "${DATA_ROOT}/prompted"
 if [ "$1" != "--jsonl" ]; then
     # Convert CSV to JSONL format
     PROMPTED_DIR="${DATA_ROOT}/prompted"
-    python singleturn/build_prompted_datasets.py \
+    python utils/build_prompted_datasets.py \
         -f "$INPUT_CSV" \
         -p "$PROMPT_DIR" \
         -o "$PROMPTED_DIR" \

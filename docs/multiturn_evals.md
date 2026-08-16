@@ -7,7 +7,27 @@ This guide covers evaluating counselors interactively, creating LLM patient prof
 To evaluate a counselor interactively, you must first create LLM Patient Profiles.
 
 1. **Extract Traits from Real Conversations**:
-   Follow the single-turn pipeline (detailed in `singleturn_evals.md`) to extract traits and de-identify real conversations using the `convo_traits_for_profile` and `deid` prompts.
+   First, build a prompted dataset to extract clinical traits from a de-identified sample of real conversations.
+   ```bash
+   python utils/build_prompted_datasets.py \
+     -f data/singleturn/for_prompting/sampled_for_patient_profiles_deid.csv \
+     -p prompts/rubrics/convo_traits_for_profile \
+     -o data/prompted/ \
+     -n convo_traits_for_profile \
+     -fmt messages \
+     -c deid_conversation
+   ```
+   Next, run an LLM to generate the trait responses:
+   ```bash
+   bash singleturn/run_llm_client.sh data/prompted/convo_traits_for_profile.jsonl "gpt-4o" "openai-batch" 5 1000 "https://api.openai.com/v1/chat/completions"
+   ```
+   Finally, extract the completions into a CSV:
+   ```bash
+   python singleturn/extract_content_from_llm_completion.py \
+     -i data/llm_inference/completions/final_merged_gpt-4o_max1000.jsonl \
+     -o data/llm_inference/extracted_completions/patient_profiles_deidentified.csv \
+     -c "client_traits_obscured_json_raw"
+   ```
 
 2. **Generate Patient Profiles**:
    Once you have the extracted traits and de-identified conversations, you can generate the patient profiles.
