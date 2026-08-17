@@ -6,7 +6,6 @@ Steps executed:
   1. Upload the dataset (CSV → Langfuse dataset items)
   2. Run generation (copilot responses logged as Langfuse experiment run)
   3. Run eval & scoring (LLM judge, scores attached to each trace)
-  4. Create analysis dashboard  [optional, requires --email / --password]
 
 Both steps 2 and 3 support standard (synchronous) and Batch API modes.
 When run interactively, each step will ask whether to use the Batch API
@@ -15,21 +14,20 @@ and confirm before spending money. Pass --yes to skip all prompts.
 Usage
 -----
   # Full pipeline from a raw dialogue CSV:
-  python run_pipeline.py \\
-      --input /path/to/raw_convos.csv \\
-      --convert \\
-      --dataset-name static-evals \\
-      --run-name copilot-v1 \\
-      --model gpt-4.1 \\
-      --email admin@example.com --password yourpassword
+  python run_pipeline.py \
+      --input /path/to/raw_convos.csv \
+      --convert \
+      --dataset-name static-evals \
+      --run-name copilot-v1 \
+      --model gpt-4.1
 
-  # Skip prompt upload (already done) and dashboard creation:
-  python run_pipeline.py \\
-      --input static_eval_input.csv \\
-      --dataset-name static-evals \\
-      --run-name copilot-v2 \\
-      --model gpt-4.1 \\
-      --skip-prompts --skip-dashboard
+  # Skip prompt upload (already done):
+  python run_pipeline.py \
+      --input static_eval_input.csv \
+      --dataset-name static-evals \
+      --run-name copilot-v2 \
+      --model gpt-4.1 \
+      --skip-prompts
 
   # Force batch API for both steps and skip confirmations:
   python run_pipeline.py \\
@@ -40,12 +38,12 @@ Usage
       --use-batch --yes
 
   # Resume from step 2 (dataset already uploaded):
-  python run_pipeline.py \\
-      --input ignored \\
-      --dataset-name static-evals \\
-      --run-name copilot-v1 \\
-      --model gpt-4.1 \\
-      --start-from 2 --skip-dashboard
+  python run_pipeline.py \
+      --input ignored \
+      --dataset-name static-evals \
+      --run-name copilot-v1 \
+      --model gpt-4.1 \
+      --start-from 2
 
   # Resume a batch that was submitted for step 2:
   python run_pipeline.py \\
@@ -69,8 +67,6 @@ Environment variables (set in ~/.bashrc)
   LANGFUSE_PUBLIC_KEY   – Langfuse public key
   LANGFUSE_BASE_URL     – e.g. http://localhost:3000
   OPENAI_API_KEY        – for the generation and eval LLM calls
-  LANGFUSE_ADMIN_EMAIL  – for dashboard creation (step 4)
-  LANGFUSE_ADMIN_PASSWORD
 """
 
 import argparse
@@ -129,20 +125,11 @@ def parse_args():
 
     # ── Flow control ───────────────────────────────────────────────────────
     p.add_argument("--start-from", type=int, default=0,
-                   help="Start from step N (0=prompts, 1=dataset, 2=gen, 3=eval, 4=dashboard)")
+                   help="Start from step N (0=prompts, 1=dataset, 2=gen, 3=eval)")
     p.add_argument("--skip-prompts", action="store_true",
                    help="Skip step 0 (prompts already uploaded)")
-    p.add_argument("--skip-dashboard", action="store_true",
-                   help="Skip step 4 (dashboard creation)")
     p.add_argument("--force-prompts", action="store_true",
                    help="Re-upload prompts even if text is unchanged")
-
-    # ── Dashboard auth ─────────────────────────────────────────────────────
-    p.add_argument("--email", default="",
-                   help="Langfuse admin email for dashboard creation")
-    p.add_argument("--password", default="",
-                   help="Langfuse admin password for dashboard creation")
-    p.add_argument("--dashboard-name", default="Static Evals Analysis")
 
     return p.parse_args()
 
@@ -225,17 +212,6 @@ def main():
         run_step("step3_run_eval.py", flags, 3, "Run LLM eval and attach scores")
     else:
         print("\n[pipeline] Skipping step 3 (eval)")
-
-    # ── Step 4: Create dashboard ────────────────────────────────────────────
-    if start <= 4 and not args.skip_dashboard:
-        flags = ["--dashboard-name", args.dashboard_name]
-        if args.email:
-            flags += ["--email", args.email]
-        if args.password:
-            flags += ["--password", args.password]
-        run_step("step4_create_dashboard.py", flags, 4, "Create analysis dashboard")
-    else:
-        print("\n[pipeline] Skipping step 4 (dashboard)")
 
     print("\n[pipeline] 🎉 All steps complete!")
     print(f"[pipeline]    View results at: $LANGFUSE_BASE_URL/datasets/{args.dataset_name}")

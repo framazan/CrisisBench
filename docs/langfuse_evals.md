@@ -1,6 +1,6 @@
 # Langfuse Evaluation Pipelines
 
-The CrisisBench repository integrates directly with [Langfuse](https://langfuse.com) for tracking model execution, evaluating outputs via LLM judges, and building dashboards to monitor overall performance.
+The CrisisBench repository integrates directly with [Langfuse](https://langfuse.com) for tracking model execution and evaluating outputs via LLM judges.
 
 We provide two distinct Langfuse pipelines depending on your evaluation setup:
 1. **Dynamic Evaluations (Multi-turn)**: Located in `multiturn/langfuse/`
@@ -30,33 +30,22 @@ Located in `multiturn/langfuse/`. This pipeline automatically simulates multi-tu
 **Steps Executed:**
 1. Generate synthetic patient–counselor dialogues and upload them as a Langfuse dataset.
 2. Run LLM-judge evaluation on every dialogue, posting scores to each trace.
-3. Create an analysis dashboard in Langfuse.
 
 ### Full Pipeline
 Run all profiles matching the config file:
 ```bash
 python multiturn/langfuse/run_pipeline.py \
     --dataset-name dynamic-evals-v1 \
-    --run-name eval-run-1 \
-    --email admin@example.com --password yourpassword
+    --run-name eval-run-1
 ```
 
 ### Resume Execution
-If you've already generated the dataset and just want to run evaluations and create the dashboard:
+If you've already generated the dataset and just want to run evaluations:
 ```bash
 python multiturn/langfuse/run_pipeline.py \
     --dataset-name dynamic-evals-v1 \
     --run-name eval-run-2 \
-    --start-from 2 \
-    --email admin@example.com --password yourpassword
-```
-
-### Skip Dashboard
-```bash
-python multiturn/langfuse/run_pipeline.py \
-    --dataset-name dynamic-evals-v1 \
-    --run-name eval-run-1 \
-    --skip-dashboard
+    --start-from 2
 ```
 
 ---
@@ -70,7 +59,6 @@ Located in `singleturn/langfuse/`. This pipeline uploads fixed prompts and a dat
 1. Upload the dataset (CSV → Langfuse dataset items).
 2. Run generation (copilot responses logged as Langfuse experiment run).
 3. Run eval & scoring (LLM judge, scores attached to each trace).
-4. Create an analysis dashboard.
 
 ### Full Pipeline
 Provide your raw conversation CSV:
@@ -80,18 +68,17 @@ python singleturn/langfuse/run_pipeline.py \
     --convert \
     --dataset-name static-evals \
     --run-name copilot-v1 \
-    --model gpt-4o \
-    --email admin@example.com --password yourpassword
+    --model gpt-4o
 ```
 
-### Skip Dashboard Creation
+### Skip Prompts
 ```bash
 python singleturn/langfuse/run_pipeline.py \
     --input static_eval_input.csv \
     --dataset-name static-evals \
     --run-name copilot-v2 \
     --model gpt-4o \
-    --skip-prompts --skip-dashboard
+    --skip-prompts
 ```
 
 ### Resume from Step 2 (Dataset already uploaded)

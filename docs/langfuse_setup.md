@@ -33,15 +33,6 @@ If you prefer to host your trace data locally, you can run Langfuse via Docker.
    export LANGFUSE_BASE_URL="http://localhost:3000"
    ```
 
-## Dashboard Creation
-Our pipeline scripts (`run_pipeline.py`) can automatically generate analytics dashboards for you if you provide your Langfuse admin credentials. 
-
-To enable automated dashboard creation, you must provide your account email and password when prompted by the CLI, or export them into your environment:
-```bash
-export LANGFUSE_ADMIN_EMAIL="admin@example.com"
-export LANGFUSE_ADMIN_PASSWORD="yourpassword"
-```
-
 ## Additional Environment Variables
 Our pipelines also require your standard OpenAI API key for generating text and running the LLM judges:
 ```bash

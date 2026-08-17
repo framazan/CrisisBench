@@ -5,7 +5,6 @@ Steps executed:
   1. Generate synthetic patient–counselor dialogues and upload them as a
      Langfuse dataset (one item per patient profile).
   2. Run LLM-judge evaluation on every dialogue; post scores onto each trace.
-  3. Create an analysis dashboard in Langfuse.
 
 The dataset name is used as the Langfuse tag on generation traces (step 1).
 Evaluation traces (step 2) are tagged as "{dataset_name}/{run_name}".
@@ -15,29 +14,19 @@ Usage
   # Full pipeline – run all profiles matching "financial_loss":
   python run_pipeline.py \\
       --dataset-name dynamic-evals-v1 \\
-      --run-name eval-run-1 \\
-      --email admin@example.com --password yourpassword
+      --run-name eval-run-1
 
   # Override which profiles to generate (category or exact key):
   python run_pipeline.py \\
       --dataset-name dynamic-evals-v1 \\
       --run-name eval-run-1 \\
-      --patient-prompts anxiety panic_attack_14 \\
-      --email admin@example.com --password yourpassword
+      --patient-prompts anxiety panic_attack_14
 
-  # Skip dialogue generation (dataset already uploaded), only run eval + dashboard:
+  # Skip dialogue generation (dataset already uploaded), only run eval:
   python run_pipeline.py \\
       --dataset-name dynamic-evals-v1 \\
       --run-name eval-run-2 \\
-      --start-from 2 \\
-      --email admin@example.com --password yourpassword
-
-  # Skip dashboard:
-  python run_pipeline.py \\
-      --dataset-name dynamic-evals-v1 \\
-      --run-name eval-run-1 \\
-      --skip-dashboard \\
-      --email admin@example.com --password yourpassword
+      --start-from 2
 
 Required environment variables (OPENAI_API_KEY + Langfuse keys):
   OPENAI_API_KEY         – for dialogue generation and LLM-judge eval calls
@@ -94,7 +83,7 @@ def parse_args():
 
     # ── Flow control ───────────────────────────────────────────────────────
     p.add_argument("--start-from", type=int, default=1,
-                   help="Start from step N (1=generate+upload, 2=eval, 3=dashboard)")
+                   help="Start from step N (1=generate+upload, 2=eval)")
     p.add_argument(
         "--on-existing-dataset",
         choices=["prompt", "generate", "reuse"],
@@ -104,15 +93,6 @@ def parse_args():
             "and upserts selected profiles, 'reuse' skips step 1 work, 'prompt' asks"
         ),
     )
-    p.add_argument("--skip-dashboard", action="store_true",
-                   help="Skip step 3 (dashboard creation)")
-
-    # ── Dashboard auth ─────────────────────────────────────────────────────
-    p.add_argument("--email",    default="",
-                   help="Langfuse admin email for dashboard creation (step 3)")
-    p.add_argument("--password", default="",
-                   help="Langfuse admin password for dashboard creation (step 3)")
-    p.add_argument("--dashboard-name", default="Dynamic Evals Analysis")
 
     return p.parse_args()
 
@@ -163,17 +143,6 @@ def main():
                  "Run LLM-judge eval & attach scores to traces")
     else:
         print("\n[pipeline] Skipping step 2 (eval)")
-
-    # ── Step 3: Create dashboard ───────────────────────────────────────────
-    if start <= 3 and not args.skip_dashboard:
-        flags = ["--dashboard-name", args.dashboard_name]
-        if args.email:
-            flags += ["--email",    args.email]
-        if args.password:
-            flags += ["--password", args.password]
-        run_step("step3_create_dashboard.py", flags, 3, "Create analysis dashboard")
-    else:
-        print("\n[pipeline] Skipping step 3 (dashboard)")
 
     print("\n[pipeline] 🎉 All steps complete!")
     import os

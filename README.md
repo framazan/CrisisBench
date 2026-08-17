@@ -14,7 +14,7 @@ The repository is organized into the following key components:
 - `de_id/`: Scripts and utilities for de-identifying real-world crisis text transcripts while preserving context.
 - `singleturn/`: Code to evaluate LLMs in single-turn conversational environments.
 - `multiturn/`: Code to run and evaluate multi-turn dialogues between counselor systems and patient LLMs, by generating patient LLM profiles from real-world counseling text.
-- `prompts/rubrics/`: Configuration files and yaml templates containing the rubrics used by the LLM Judges.
+- `prompts/rubrics/`: Configuration files and yaml templates containing the rubrics used by the LLM judges. These are some of the most important innovations presented in the paper.
 - `data/multiturn/patient_profiles/`: Templates and configurations for patient LLMs.
 - `data/singleturn/for_prompting/`: Data inputs, outputs, and intermediate states for single-turn testing.
 - `utils/`: Shared utilities for model prompting, file IO, and data processing.
@@ -42,7 +42,7 @@ CrisisBench provides two distinct frameworks for evaluating LLM counselors, depe
 </p>
 
 #### Single-Turn Evaluation
-The **Single-Turn Evaluation** framework tests how an LLM counselor responds to isolated, static crisis messages. It is designed to evaluate specific interventions (such as empathy, risk assessment, or active listening) on fixed message exchanges using message-level rubrics. This method is highly deterministic and lightweight. 
+The **Single-Turn Evaluation** tests how an LLM counselor responds to isolated, static crisis messages. It is designed to evaluate specific interventions (such as empathy, risk assessment, or active listening) on fixed message exchanges using message-level rubrics. This method is highly deterministic and lightweight.
 
 For full instructions, see the [Single-Turn Evaluation Guide](docs/singleturn_evals.md).
 
@@ -52,7 +52,7 @@ The **Multi-Turn Evaluation** framework simulates an entire crisis conversation 
 For full instructions, see the [Multi-Turn Evaluation Guide](docs/multiturn_evals.md).
 
 #### Langfuse UI Integration
-For tracking runs, evaluating traces, and visualizing metrics on a rich web dashboard, CrisisBench integrates natively with Langfuse.
+For tracking runs and evaluating traces, CrisisBench can integrate with Langfuse.
 - [Langfuse UI Setup Guide](docs/langfuse_setup.md)
 - [Langfuse UI Execution Guide](docs/langfuse_evals.md)
 
@@ -60,10 +60,10 @@ For tracking runs, evaluating traces, and visualizing metrics on a rich web dash
 
 ## Security and Privacy
 
-For privacy and security reasons, real patient profiles derived from the hotline metadata are **not included** in this open-source release. We provide dummy patient profiles located in `data/multiturn/patient_profiles/dummy_patient_profiles.yaml` that can be used to run and test the pipeline safely.
+For privacy and security reasons, real patient profiles derived from the hotline are **not included** in this open-source release. We provide dummy patient profiles located in `data/multiturn/patient_profiles/dummy_patient_profiles.yaml` that can be used to run and test the pipeline safely.
 
 ## Acknowledgements
-We extend our deepest gratitude to the Vandrevala Foundation and their generous sponsors for providing the resources that made this analysis possible. We deeply appreciate their time and cooperation, which allowed us to integrate seamlessly with their counseling and IT teams.
+We extend our deepest gratitude to the Vandrevala Foundation and their generous sponsors for providing the resources that made this analysis possible.
 
 ## Citation
 
@@ -73,7 +73,7 @@ If you use this software in your research, please cite our paper as below.
 @article{
 crisisbench2026,
 title={CrisisBench: An Evaluation Suite for Crisis Counseling AI},
-author={Akshay Swaminathan and Filip Ramazan and Sharang Phadke and Kevina Wang and Ivan Lopez and Shaked Peleg Azzam and Gloria Ye and Chastin Chung and William Wang and Stephanie Stoll and Ivy Pham and Rebecca Hurwitz and Shreya Shah and Divyanjali Verma},
+author={Akshay Swaminathan and Filip Ramazan and Sharang Phadke and Kevina Wang and Ivan Lopez and Shaked Peleg Azzam and Gloria Ye and Chastin Chung and William Wang and Stephanie Stoll and Ivy Pham and Rebecca Hurwitz and Shreya Shah and Divyanjali Verma and Abhay John and Ehsan Adeli and Samuel Chuang and Nigam Shah},
 journal={arXiv preprint arXiv:[Placeholder]},
 year={2026},
 url={[Placeholder for URL]}
